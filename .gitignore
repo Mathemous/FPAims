@@ -38,3 +38,7 @@ next-env.d.ts
 /work/
 
 *.tsbuildinfo
+
+# Local recovery and generated inventory
+/Backups/
+/Tree.md

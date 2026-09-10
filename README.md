@@ -45,3 +45,18 @@ Import this GitHub repository into Vercel. `vercel.json` selects Vite, `npm run 
 Edit `data/records.json` while preserving its fields. Each entry has a unique `id` and one of the program identifiers in `lib/search.mjs`. Validate counts and update the count assertions in `tests/search.test.mjs` when the source list changes. Run tests and the build, then push to GitHub. Program entry counts in the UI are calculated from the data.
 
 Welcome and search screens use a URL hash so they work on ordinary static hosting. The app includes a home-screen web manifest; it does not cache offline data or store visitors' searches.
+
+## Windows launchers
+
+Double-click these files in the FP-Aims folder. They follow the folder if it is moved; no computer-specific setup is required.
+
+- **Push.bat**: tests and builds, commits local changes if needed, then pushes main. Vercel publishes new app changes automatically. Stops if a step fails; never force-pushes.
+- **Git Pull.bat**: requires a clean working tree, pulls fast-forward only, then installs locked dependencies.
+- **Create Backup.bat**: creates `Backups/FP-AIMS_timestamp`, verifies source files with SHA256, and includes a verified Git-history bundle. Only completed backups get a completion marker. Dependencies, builds, caches and earlier backups are excluded. Backups stay out of GitHub.
+- **Restore Latest Backup.bat**: verifies the newest completed backup, requests RESTORE confirmation and creates a safety backup before replacing source files. Preserves Git metadata and local environment files. Newer extra files are not deleted. Reinstalls dependencies and checks the build. Does not automatically push. Add `-DryRun` to verify without restoring.
+- **1 - Start Vite.bat**: opens the local app on port 5180. Keep the window open; Ctrl+C stops it. An occupied port causes an error instead of opening another project's app.
+- **Check Build.bat**: runs tests and the production build without publishing.
+- **Tree Generator.bat**: generates `Tree.md`, excluding dependencies, history and backup folders.
+- **Open Live App.bat**: opens the public Vercel app.
+
+For unattended use, add `-NoPause` to any launcher. The shared implementation lives in `scripts/project-tools.ps1`. Restoring uses a file overlay, not a destructive directory mirror; Git history is available in each backup's `history.bundle` for advanced recovery.
