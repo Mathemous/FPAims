@@ -17,7 +17,7 @@ import {
   X,
 } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { programs, resolveSearch, groupMatches } from '@/lib/search.mjs';
+import { programs, searchRecords, groupMatches } from '@/lib/search.mjs';
 import records from '@/data/records.json';
 type Item = (typeof records)[number];
 function Brand({ compact = false }: { compact?: boolean }) {
@@ -78,7 +78,6 @@ export default function Home() {
   const [word, setWord] = useState('');
   const [query, setQuery] = useState<string | null>(null);
   const [visible, setVisible] = useState(30);
-  const [searchOriginal, setSearchOriginal] = useState(false);
   const [searchEditable, setSearchEditable] = useState(false);
   const appRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
@@ -138,14 +137,10 @@ export default function Home() {
     return () => observer.disconnect();
   }, [entered]);
   const current = programs.find((p) => p.id === program)!;
-  const resolved = useMemo(
-    () =>
-      query === null
-        ? { rows: [], correction: null }
-        : resolveSearch(records, query, { correct: !searchOriginal }),
-    [query, searchOriginal],
+  const matching = useMemo(
+    () => (query === null ? [] : searchRecords(records, query)),
+    [query],
   );
-  const matching = resolved.rows;
   const own = matching.filter((r: Item) => r.program === program),
     groups = groupMatches(own);
   const alternatives = programs
@@ -158,7 +153,6 @@ export default function Home() {
   function submit(e: React.FormEvent) {
     e.preventDefault();
     inputRef.current?.blur();
-    setSearchOriginal(false);
     setQuery(word.trim());
     setVisible(30);
     setTimeout(
@@ -232,6 +226,7 @@ export default function Home() {
             placeholder="Try books, paint, training…"
             type="search"
             autoComplete="off"
+            autoCorrect="off"
             maxLength={150}
           />
           {word && (
@@ -334,7 +329,7 @@ export default function Home() {
           >
             <div aria-live="polite" aria-atomic="true" className="sr-only">
               {query !== null
-                ? `${resolved.correction ? 'Showing results for ' + resolved.correction + '. ' : ''}${own.length} matches in ${current.name}. Matches in ${alternatives.length} other programs.`
+                ? `${own.length} matches in ${current.name}. Matches in ${alternatives.length} other programs.`
                 : 'Select a program and search to get started.'}
             </div>
             {query === null ? null : (
@@ -355,26 +350,7 @@ export default function Home() {
                   <span className="eyebrow">
                     {query ? 'SEARCH RESULTS' : 'PROGRAM DIRECTORY'}
                   </span>
-                  <h2>
-                    {resolved.correction ? (
-                      <>Showing results for “{resolved.correction}”</>
-                    ) : query ? (
-                      <>Results for “{query}”</>
-                    ) : (
-                      current.name
-                    )}
-                  </h2>
-                  {resolved.correction && (
-                    <button
-                      className="original-search"
-                      onClick={() => {
-                        setSearchOriginal(true);
-                        setVisible(30);
-                      }}
-                    >
-                      Search instead for “{query}”
-                    </button>
-                  )}
+                  <h2>{query ? <>Results for “{query}”</> : current.name}</h2>
                 </div>
                 <div
                   className={`result-status ${own.length ? 'found' : 'not-found'}`}

@@ -1385,19 +1385,6 @@ body {
     overflow-y: auto;
   }
 }
-.original-search {
-  display: block;
-  background: transparent;
-  color: #2868a7;
-  padding: 8px 0;
-  min-height: 44px;
-  font-size: 14px;
-  line-height: 1.5;
-  text-align: left;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  overflow-wrap: anywhere;
-}
 
 /* Retry in place after a catalog-wide miss. */
 .no-results-view .workspace {

@@ -61,6 +61,3 @@ Double-click these files in the FP-Aims folder. They follow the folder if it is 
 
 For unattended use, add `-NoPause` to any launcher. The shared implementation lives in `scripts/project-tools.ps1`. Restoring uses a file overlay, not a destructive directory mirror; Git history is available in each backup's `history.bundle` for advanced recovery.
 
-## Search spelling suggestions
-
-When a search has no matches across all five programs, the app checks likely misspellings against words in the catalog. It only applies a correction if the revised query returns results and the spelling is sufficiently distinct from alternatives. A “Search instead for…” link repeats the original query with correction disabled. Existing matches, short acronyms, numbers and ambiguous spellings are preserved. Suggestions run locally; no API or network request is used.
