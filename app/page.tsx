@@ -271,44 +271,7 @@ export default function Home() {
                 ? `${own.length} matches in ${current.name}. Matches in ${alternatives.length} other programs.`
                 : 'Select a program and search to get started.'}
             </div>
-            {query === null ? (
-              <div className="ready-state">
-                <div className="ready-icon">
-                  <Search size={34} strokeWidth={1.6} />
-                </div>
-                <span className="eyebrow">THE RIGHT RESOURCE STARTS HERE</span>
-                <h2>What are you looking for?</h2>
-                <p>
-                  Choose a program and search for a material, item, or service.
-                  You’ll also see where it’s listed in other programs.
-                </p>
-                <div className="suggestions">
-                  {['Books', 'Art supplies', 'Professional development'].map(
-                    (text) => (
-                      <button
-                        key={text}
-                        onClick={() => {
-                          setWord(text);
-                          setQuery(text);
-                          setVisible(30);
-                        }}
-                      >
-                        {text}
-                        <ArrowRight size={15} />
-                      </button>
-                    ),
-                  )}
-                </div>
-                <div className="directory-stats">
-                  <span>
-                    <strong>1,009</strong> source entries
-                  </span>
-                  <span>
-                    <strong>5</strong> programs
-                  </span>
-                </div>
-              </div>
-            ) : (
+            {query === null ? null : (
               <>
                 <button
                   className="edit-search"

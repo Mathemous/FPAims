@@ -1023,3 +1023,21 @@ h3 {
     display: none;
   }
 }
+
+/* Keep the initial view focused on the search form. */
+.search-view .workspace {
+  max-width: 560px;
+}
+.search-view .workspace-grid {
+  display: block;
+}
+.search-view .results-panel {
+  display: none;
+}
+.search-view .search-panel {
+  position: static;
+}
+.search-view .app-footer {
+  flex-direction: column;
+  gap: 12px;
+}
