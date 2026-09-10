@@ -244,22 +244,7 @@ export default function Home() {
               <button className="primary-button" type="submit">
                 Search <ArrowRight size={20} />
               </button>
-              <button
-                className="browse-button"
-                type="button"
-                onClick={() => {
-                  setWord('');
-                  setQuery('');
-                  setVisible(30);
-                }}
-              >
-                Browse all items in this program
-              </button>
             </form>
-            <div className="search-tip">
-              <Search size={19} />
-              <p>One search checks all five programs.</p>
-            </div>
           </aside>
           <section
             className="results-panel"

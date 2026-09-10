@@ -1041,3 +1041,30 @@ h3 {
   flex-direction: column;
   gap: 12px;
 }
+
+/* Paint behind the iPhone status bar while keeping content below the notch. */
+html {
+  background: #10375f;
+}
+body {
+  background: #f2f6fa;
+}
+.app {
+  min-height: 100svh;
+  background: #f2f6fa;
+}
+.app-header {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.header-inner {
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+.welcome {
+  padding-top: calc(40px + env(safe-area-inset-top, 0px));
+}
+@media (max-width: 650px) {
+  .welcome {
+    padding-top: calc(27px + env(safe-area-inset-top, 0px));
+  }
+}
