@@ -1250,3 +1250,19 @@ body {
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
 }
+
+/* Fix the header to the viewport even during iOS page overscroll. */
+.app {
+  padding-top: var(
+    --app-header-height,
+    calc(88px + env(safe-area-inset-top, 0px))
+  );
+}
+.app .app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 100;
+}

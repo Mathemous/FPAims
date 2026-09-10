@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import {
   ArrowLeft,
@@ -82,6 +82,8 @@ export default function Home() {
   const [query, setQuery] = useState<string | null>(null);
   const [visible, setVisible] = useState(30);
   const [searchEditable, setSearchEditable] = useState(false);
+  const appRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const workspaceRef = useRef<HTMLElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null),
     inputRef = useRef<HTMLInputElement>(null);
@@ -123,6 +125,20 @@ export default function Home() {
     flushSync(() => setSearchEditable(true));
     inputRef.current?.focus();
   }
+  useLayoutEffect(() => {
+    const header = headerRef.current;
+    const app = appRef.current;
+    if (!entered || !header || !app) return;
+    const measure = () =>
+      app.style.setProperty(
+        '--app-header-height',
+        header.getBoundingClientRect().height + 'px',
+      );
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, [entered]);
   const current = programs.find((p) => p.id === program)!;
   const matching = query === null ? [] : searchRecords(records, query);
   const own = matching.filter((r: Item) => r.program === program),
@@ -195,8 +211,11 @@ export default function Home() {
       </main>
     );
   return (
-    <div className={`app ${query === null ? 'search-view' : 'results-view'}`}>
-      <header className="app-header">
+    <div
+      ref={appRef}
+      className={`app ${query === null ? 'search-view' : 'results-view'}`}
+    >
+      <header ref={headerRef} className="app-header">
         <div className="header-inner">
           <a
             href="#"
