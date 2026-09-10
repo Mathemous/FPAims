@@ -344,7 +344,7 @@ export default function Home() {
                     });
                   }}
                 >
-                  <ArrowLeft size={18} /> Back to search
+                  <ArrowLeft size={24} /> Back to search
                 </button>
                 <div className="results-heading">
                   <span className="eyebrow">
