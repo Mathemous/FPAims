@@ -31,15 +31,6 @@ function Brand({ compact = false }: { compact?: boolean }) {
     </div>
   );
 }
-function SourceNote() {
-  return (
-    <p className="source-note">
-      FY 2027 · ePlan budget narratives · Revision 1<br />A public-information
-      reference. Matches reflect listed items and recipients, not a blanket
-      purchasing approval.
-    </p>
-  );
-}
 function MatchCard({
   item,
   recipients,
@@ -183,6 +174,86 @@ export default function Home() {
     setProgram(value);
     setVisible(30);
   }
+  const noResults = query !== null && matching.length === 0;
+  const searchForm = (
+    <form onSubmit={submit}>
+      <div className="program-field">
+        <span id="program-label" className="program-label">
+          Title 1 Programs
+        </span>
+        <ToggleGroup
+          className="program-buttons"
+          value={[program]}
+          onValueChange={(values) => {
+            if (values.length) changeProgram(String(values[0]));
+          }}
+          aria-labelledby="program-label"
+          aria-describedby="program-count"
+        >
+          {programs.map((p, index) => (
+            <ToggleGroupItem
+              key={p.id}
+              value={p.id}
+              type="button"
+              aria-label={p.name}
+              className={`program-touch ${index === 0 ? 'program-touch-centered' : ''} ${program === p.id ? 'is-selected' : ''}`}
+            >
+              {p.id === 'title-1-neglected' ? (
+                <span>
+                  Title I, Part A<br />
+                  <strong>Neglected</strong>
+                </span>
+              ) : (
+                p.name
+              )}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <p id="program-count" className="program-count">
+          {records.filter((r) => r.program === program).length} entries in this
+          program
+        </p>
+      </div>
+      <div className="search-field">
+        <label htmlFor="search">Item or service</label>
+        <div className="input-wrap">
+          <Search size={21} />
+          <input
+            id="search"
+            ref={inputRef}
+            readOnly={!searchEditable}
+            onPointerDown={activateSearch}
+            onClick={activateSearch}
+            onFocus={(e) => {
+              if (!searchEditable) e.currentTarget.blur();
+            }}
+            value={word}
+            onChange={(e) => setWord(e.target.value)}
+            placeholder="Try books, paint, training…"
+            type="search"
+            autoComplete="off"
+            maxLength={150}
+          />
+          {word && (
+            <button
+              type="button"
+              className="clear-button"
+              aria-label="Clear search"
+              onClick={() => {
+                setWord('');
+                activateSearch();
+              }}
+            >
+              <X size={18} />
+            </button>
+          )}
+        </div>
+      </div>
+      <button className="primary-button" type="submit">
+        Search <ArrowRight size={20} />
+      </button>
+    </form>
+  );
   if (!entered)
     return (
       <main className="welcome">
@@ -221,14 +292,13 @@ export default function Home() {
             </span>
           </section>
           <p className="welcome-footer">Materials. Services. Confidence.</p>
-          <SourceNote />
         </div>
       </main>
     );
   return (
     <div
       ref={appRef}
-      className={`app ${query === null ? 'search-view' : 'results-view'}`}
+      className={`app ${query === null ? 'search-view' : 'results-view'} ${noResults ? 'no-results-view' : ''}`}
     >
       <header ref={headerRef} className="app-header">
         <div className="header-inner">
@@ -256,85 +326,7 @@ export default function Home() {
           <p>Materials and services, organized by program.</p>
         </div>
         <div className="workspace-grid">
-          <aside className="search-panel">
-            <form onSubmit={submit}>
-              <div className="program-field">
-                <span id="program-label" className="program-label">
-                  Title 1 Programs
-                </span>
-                <ToggleGroup
-                  className="program-buttons"
-                  value={[program]}
-                  onValueChange={(values) => {
-                    if (values.length) changeProgram(String(values[0]));
-                  }}
-                  aria-labelledby="program-label"
-                  aria-describedby="program-count"
-                >
-                  {programs.map((p, index) => (
-                    <ToggleGroupItem
-                      key={p.id}
-                      value={p.id}
-                      type="button"
-                      aria-label={p.name}
-                      className={`program-touch ${index === 0 ? 'program-touch-centered' : ''} ${program === p.id ? 'is-selected' : ''}`}
-                    >
-                      {p.id === 'title-1-neglected' ? (
-                        <span>
-                          Title I, Part A<br />
-                          <strong>Neglected</strong>
-                        </span>
-                      ) : (
-                        p.name
-                      )}
-                    </ToggleGroupItem>
-                  ))}
-                </ToggleGroup>
-                <p id="program-count" className="program-count">
-                  {records.filter((r) => r.program === program).length} entries
-                  in this program
-                </p>
-              </div>
-              <div className="search-field">
-                <label htmlFor="search">Item or service</label>
-                <div className="input-wrap">
-                  <Search size={21} />
-                  <input
-                    id="search"
-                    ref={inputRef}
-                    readOnly={!searchEditable}
-                    onPointerDown={activateSearch}
-                    onClick={activateSearch}
-                    onFocus={(e) => {
-                      if (!searchEditable) e.currentTarget.blur();
-                    }}
-                    value={word}
-                    onChange={(e) => setWord(e.target.value)}
-                    placeholder="Try books, paint, training…"
-                    type="search"
-                    autoComplete="off"
-                    maxLength={150}
-                  />
-                  {word && (
-                    <button
-                      type="button"
-                      className="clear-button"
-                      aria-label="Clear search"
-                      onClick={() => {
-                        setWord('');
-                        activateSearch();
-                      }}
-                    >
-                      <X size={18} />
-                    </button>
-                  )}
-                </div>
-              </div>
-              <button className="primary-button" type="submit">
-                Search <ArrowRight size={20} />
-              </button>
-            </form>
-          </aside>
+          {!noResults && <aside className="search-panel">{searchForm}</aside>}
           <section
             className="results-panel"
             aria-label="Search results"
@@ -397,7 +389,9 @@ export default function Home() {
                     <p>
                       {own.length
                         ? 'Listed in the program’s budget narratives.'
-                        : 'No matching entry in this program’s current list.'}
+                        : noResults
+                          ? 'No matches across all five programs.'
+                          : 'No matching entry in this program’s current list.'}
                     </p>
                   </div>
                 </div>
@@ -471,31 +465,13 @@ export default function Home() {
                     </div>
                   </section>
                 )}
-                {!matching.length && (
-                  <div className="empty-state">
-                    <h3>No matches across the five programs.</h3>
-                    <p>
-                      Try a shorter word, a different spelling, or a broader
-                      term such as “books” or “training”.
-                    </p>
-                    <button
-                      className="browse-button"
-                      onClick={() => {
-                        setWord('');
-                        setQuery('');
-                      }}
-                    >
-                      Browse {current.name}
-                    </button>
-                  </div>
+                {noResults && (
+                  <div className="retry-search search-panel">{searchForm}</div>
                 )}
               </>
             )}
           </section>
         </div>
-        <footer className="app-footer">
-          <SourceNote />
-        </footer>
       </main>
     </div>
   );

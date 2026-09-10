@@ -1398,3 +1398,25 @@ body {
   text-underline-offset: 3px;
   overflow-wrap: anywhere;
 }
+
+/* Retry in place after a catalog-wide miss. */
+.no-results-view .workspace {
+  max-width: 560px;
+}
+.no-results-view .workspace-grid {
+  display: block;
+}
+.no-results-view .page-title {
+  display: none;
+}
+.no-results-view .retry-search {
+  display: block;
+  position: static;
+  margin-top: 20px;
+}
+.retry-search .search-field {
+  margin: 22px 0;
+}
+.retry-search .primary-button {
+  margin-top: 0;
+}
