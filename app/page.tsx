@@ -8,7 +8,6 @@ import {
   BookOpen,
   ChevronDown,
   X,
-  ExternalLink,
 } from 'lucide-react';
 import {
   NativeSelect,
@@ -384,9 +383,6 @@ export default function Home() {
         </div>
         <footer className="app-footer">
           <SourceNote />
-          <a href="https://eplan.tn.gov/" target="_blank" rel="noreferrer">
-            View ePlan source <ExternalLink size={14} />
-          </a>
         </footer>
       </main>
     </div>
