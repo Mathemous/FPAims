@@ -57,3 +57,45 @@ test('multiple words must match and grouping retains recipient restrictions', ()
     fixture.length,
   );
 });
+
+import { resolveSearch } from '../lib/search.mjs';
+test('corrects a strong catalog spelling and keeps exact search available', () => {
+  const result = resolveSearch(records, 'keebored');
+  assert.equal(result.correction, 'keyboard');
+  assert.ok(result.rows.every((r) => /keyboard/i.test(r.item)));
+  const original = resolveSearch(records, 'keebored', { correct: false });
+  assert.equal(original.correction, null);
+  assert.equal(original.rows.length, 0);
+});
+test('corrects transpositions and multiple-word queries with real matches', () => {
+  assert.ok(resolveSearch(records, 'headphnoes').rows.length > 0);
+  const supplies = resolveSearch(records, 'art suplies');
+  assert.equal(supplies.correction, 'art supplies');
+  assert.ok(supplies.rows.length > 0);
+  assert.equal(
+    resolveSearch(records, 'profesional development').correction,
+    'professional development',
+  );
+});
+test('preserves existing matches, numbers, acronyms, blank and unknown searches', () => {
+  for (const query of [
+    'books',
+    'car',
+    'CPR training',
+    '71100',
+    '',
+    'qzxvnotpresent987',
+  ]) {
+    const result = resolveSearch(records, query);
+    assert.equal(result.correction, null);
+    assert.deepEqual(result.rows, searchRecords(records, query));
+  }
+});
+test('does not select an ambiguous equally close spelling', () => {
+  const seed = { ...records[0], subcategory: '', category: '', recipient: '' };
+  const fixture = [
+    { ...seed, item: 'boat' },
+    { ...seed, item: 'boot' },
+  ];
+  assert.equal(resolveSearch(fixture, 'boet').correction, null);
+});
