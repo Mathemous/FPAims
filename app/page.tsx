@@ -10,7 +10,10 @@ import {
   X,
   ExternalLink,
 } from 'lucide-react';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from '@/components/ui/native-select';
 import { programs, searchRecords, groupMatches } from '@/lib/search.mjs';
 import records from '@/data/records.json';
 type Item = (typeof records)[number];
@@ -101,6 +104,7 @@ export default function Home() {
     .filter((p) => p.rows.length > 0);
   function submit(e: React.FormEvent) {
     e.preventDefault();
+    inputRef.current?.blur();
     setQuery(word.trim());
     setVisible(30);
     setTimeout(
@@ -142,7 +146,10 @@ export default function Home() {
             <a
               className="primary-button"
               href="#search"
-              onClick={() => setEntered(true)}
+              onClick={() => {
+                setQuery(null);
+                setEntered(true);
+              }}
             >
               Enter FP AIMS <ArrowRight size={22} />
             </a>
@@ -156,7 +163,7 @@ export default function Home() {
       </main>
     );
   return (
-    <div className="app">
+    <div className={`app ${query === null ? 'search-view' : 'results-view'}`}>
       <header className="app-header">
         <div className="header-inner">
           <a
@@ -185,41 +192,28 @@ export default function Home() {
         <div className="workspace-grid">
           <aside className="search-panel">
             <form onSubmit={submit}>
-              <fieldset>
-                <legend>
-                  <span className="step-number">1</span> Select a program
-                </legend>
-                <RadioGroup
+              <div className="program-field">
+                <label htmlFor="program">Program</label>
+                <NativeSelect
+                  id="program"
+                  className="program-picker"
                   value={program}
-                  onValueChange={(value) => changeProgram(String(value))}
-                  aria-label="Select a program"
-                  className="program-list"
+                  onChange={(e) => changeProgram(e.target.value)}
+                  aria-describedby="program-count"
                 >
                   {programs.map((p) => (
-                    <label
-                      className={`program-option ${program === p.id ? 'selected' : ''}`}
-                      key={p.id}
-                    >
-                      <RadioGroupItem value={p.id} id={p.id} />
-                      <span>
-                        {p.name}
-                        <small>
-                          {records.filter((r) => r.program === p.id).length}{' '}
-                          entries
-                        </small>
-                      </span>
-                      {program === p.id && (
-                        <Check size={17} className="selected-check" />
-                      )}
-                    </label>
+                    <NativeSelectOption key={p.id} value={p.id}>
+                      {p.name}
+                    </NativeSelectOption>
                   ))}
-                </RadioGroup>
-              </fieldset>
+                </NativeSelect>
+                <p id="program-count" className="program-count">
+                  {records.filter((r) => r.program === program).length} entries
+                  in this program
+                </p>
+              </div>
               <div className="search-field">
-                <label htmlFor="search">
-                  <span className="step-number">2</span> Search items or
-                  services
-                </label>
+                <label htmlFor="search">Item or service</label>
                 <div className="input-wrap">
                   <Search size={21} />
                   <input
@@ -316,6 +310,15 @@ export default function Home() {
               </div>
             ) : (
               <>
+                <button
+                  className="edit-search"
+                  onClick={() => {
+                    setQuery(null);
+                    window.scrollTo({ top: 0, behavior: 'instant' });
+                  }}
+                >
+                  <ArrowLeft size={18} /> Back to search
+                </button>
                 <div className="results-heading">
                   <span className="eyebrow">
                     {query ? 'SEARCH RESULTS' : 'PROGRAM DIRECTORY'}
