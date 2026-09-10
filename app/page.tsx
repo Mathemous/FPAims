@@ -82,6 +82,7 @@ export default function Home() {
   const [query, setQuery] = useState<string | null>(null);
   const [visible, setVisible] = useState(30);
   const [searchEditable, setSearchEditable] = useState(false);
+  const workspaceRef = useRef<HTMLElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null),
     inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -210,7 +211,7 @@ export default function Home() {
           </span>
         </div>
       </header>
-      <main className="workspace">
+      <main className="workspace" ref={workspaceRef}>
         <div className="page-title">
           <a className="back-link" href="#" onClick={() => setEntered(false)}>
             <ArrowLeft size={16} /> Home
@@ -316,7 +317,10 @@ export default function Home() {
                   className="edit-search"
                   onClick={() => {
                     setQuery(null);
-                    window.scrollTo({ top: 0, behavior: 'instant' });
+                    workspaceRef.current?.scrollTo({
+                      top: 0,
+                      behavior: 'instant',
+                    });
                   }}
                 >
                   <ArrowLeft size={18} /> Back to search

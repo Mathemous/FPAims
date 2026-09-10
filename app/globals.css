@@ -1227,3 +1227,26 @@ body {
     margin-top: 0;
   }
 }
+
+/* The header is outside the scroll area, including its red divider. */
+.app {
+  height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.app .app-header {
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 30;
+}
+.app .workspace {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  margin: 0 auto;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
