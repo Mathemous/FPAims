@@ -190,7 +190,7 @@ export default function Home() {
             <form onSubmit={submit}>
               <div className="program-field">
                 <span id="program-label" className="program-label">
-                  Program
+                  Title 1 Programs
                 </span>
                 <ToggleGroup
                   className="program-buttons"
