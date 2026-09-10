@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   ArrowLeft,
   ArrowRight,
@@ -80,6 +81,7 @@ export default function Home() {
   const [word, setWord] = useState('');
   const [query, setQuery] = useState<string | null>(null);
   const [visible, setVisible] = useState(30);
+  const [searchEditable, setSearchEditable] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null),
     inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -87,6 +89,39 @@ export default function Home() {
     window.addEventListener('hashchange', sync);
     return () => window.removeEventListener('hashchange', sync);
   }, []);
+  // Restored iPhone sessions must not summon the keyboard without user intent.
+  useEffect(() => {
+    const dismiss = () => {
+      inputRef.current?.blur();
+      setSearchEditable(false);
+    };
+    const visibility = () => {
+      if (document.hidden) dismiss();
+    };
+    const keyboardNavigation = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') setSearchEditable(true);
+    };
+    window.addEventListener('pagehide', dismiss);
+    window.addEventListener('pageshow', dismiss);
+    document.addEventListener('visibilitychange', visibility);
+    document.addEventListener('keydown', keyboardNavigation);
+    return () => {
+      window.removeEventListener('pagehide', dismiss);
+      window.removeEventListener('pageshow', dismiss);
+      document.removeEventListener('visibilitychange', visibility);
+      document.removeEventListener('keydown', keyboardNavigation);
+    };
+  }, []);
+  useEffect(() => {
+    if (query === null) {
+      inputRef.current?.blur();
+      setSearchEditable(false);
+    }
+  }, [entered, query]);
+  function activateSearch() {
+    flushSync(() => setSearchEditable(true));
+    inputRef.current?.focus();
+  }
   const current = programs.find((p) => p.id === program)!;
   const matching = query === null ? [] : searchRecords(records, query);
   const own = matching.filter((r: Item) => r.program === program),
@@ -232,6 +267,12 @@ export default function Home() {
                   <input
                     id="search"
                     ref={inputRef}
+                    readOnly={!searchEditable}
+                    onPointerDown={activateSearch}
+                    onClick={activateSearch}
+                    onFocus={(e) => {
+                      if (!searchEditable) e.currentTarget.blur();
+                    }}
                     value={word}
                     onChange={(e) => setWord(e.target.value)}
                     placeholder="Try books, paint, training…"
@@ -246,7 +287,7 @@ export default function Home() {
                       aria-label="Clear search"
                       onClick={() => {
                         setWord('');
-                        inputRef.current?.focus();
+                        activateSearch();
                       }}
                     >
                       <X size={18} />
