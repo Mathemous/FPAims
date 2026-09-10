@@ -1148,3 +1148,53 @@ body {
     box-shadow: 0 -4px 18px #10375f12;
   }
 }
+
+.program-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 650;
+  margin-bottom: 10px;
+}
+.program-buttons {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.program-buttons .program-touch {
+  height: auto;
+  min-height: 62px;
+  min-width: 0;
+  width: 100%;
+  padding: 10px 8px;
+  border: 1px solid #b7c8da;
+  border-radius: 10px;
+  background: #f7faff;
+  color: #17324e;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 550;
+  white-space: normal;
+  text-align: center;
+  box-shadow: none;
+}
+.program-buttons .program-touch-wide {
+  grid-column: 1 / -1;
+  min-height: 50px;
+}
+.program-buttons .program-touch small {
+  font-size: 12px;
+  font-weight: 400;
+}
+.program-buttons .program-touch:hover {
+  background: #e9f2fc;
+}
+.program-buttons .program-touch.is-selected {
+  background: #10375f;
+  border-color: #10375f;
+  color: #fff;
+}
+.program-buttons .program-touch:focus-visible {
+  outline: 3px solid #4198f4;
+  outline-offset: 2px;
+}

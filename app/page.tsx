@@ -9,10 +9,7 @@ import {
   ChevronDown,
   X,
 } from 'lucide-react';
-import {
-  NativeSelect,
-  NativeSelectOption,
-} from '@/components/ui/native-select';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { programs, searchRecords, groupMatches } from '@/lib/search.mjs';
 import records from '@/data/records.json';
 type Item = (typeof records)[number];
@@ -192,20 +189,37 @@ export default function Home() {
           <aside className="search-panel">
             <form onSubmit={submit}>
               <div className="program-field">
-                <label htmlFor="program">Program</label>
-                <NativeSelect
-                  id="program"
-                  className="program-picker"
-                  value={program}
-                  onChange={(e) => changeProgram(e.target.value)}
+                <span id="program-label" className="program-label">
+                  Program
+                </span>
+                <ToggleGroup
+                  className="program-buttons"
+                  value={[program]}
+                  onValueChange={(values) => {
+                    if (values.length) changeProgram(String(values[0]));
+                  }}
+                  aria-labelledby="program-label"
                   aria-describedby="program-count"
                 >
-                  {programs.map((p) => (
-                    <NativeSelectOption key={p.id} value={p.id}>
-                      {p.name}
-                    </NativeSelectOption>
+                  {programs.map((p, index) => (
+                    <ToggleGroupItem
+                      key={p.id}
+                      value={p.id}
+                      type="button"
+                      aria-label={p.name}
+                      className={`program-touch ${index === 0 ? 'program-touch-wide' : ''} ${program === p.id ? 'is-selected' : ''}`}
+                    >
+                      {p.id === 'title-1-neglected' ? (
+                        <span>
+                          Title I, Part A<br />
+                          <small>Neglected</small>
+                        </span>
+                      ) : (
+                        p.name
+                      )}
+                    </ToggleGroupItem>
                   ))}
-                </NativeSelect>
+                </ToggleGroup>
                 <p id="program-count" className="program-count">
                   {records.filter((r) => r.program === program).length} entries
                   in this program
