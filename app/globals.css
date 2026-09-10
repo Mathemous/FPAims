@@ -1178,13 +1178,14 @@ body {
   text-align: center;
   box-shadow: none;
 }
-.program-buttons .program-touch-wide {
+.program-buttons .program-touch-centered {
   grid-column: 1 / -1;
-  min-height: 50px;
+  width: calc((100% - 8px) / 2);
+  justify-self: center;
 }
-.program-buttons .program-touch small {
-  font-size: 12px;
-  font-weight: 400;
+.program-buttons .program-touch strong {
+  font-size: inherit;
+  font-weight: 700;
 }
 .program-buttons .program-touch:hover {
   background: #e9f2fc;
@@ -1197,4 +1198,8 @@ body {
 .program-buttons .program-touch:focus-visible {
   outline: 3px solid #4198f4;
   outline-offset: 2px;
+}
+
+.program-buttons {
+  grid-auto-rows: 1fr;
 }

@@ -207,12 +207,12 @@ export default function Home() {
                       value={p.id}
                       type="button"
                       aria-label={p.name}
-                      className={`program-touch ${index === 0 ? 'program-touch-wide' : ''} ${program === p.id ? 'is-selected' : ''}`}
+                      className={`program-touch ${index === 0 ? 'program-touch-centered' : ''} ${program === p.id ? 'is-selected' : ''}`}
                     >
                       {p.id === 'title-1-neglected' ? (
                         <span>
                           Title I, Part A<br />
-                          <small>Neglected</small>
+                          <strong>Neglected</strong>
                         </span>
                       ) : (
                         p.name
