@@ -1105,3 +1105,46 @@ body {
     margin-bottom: 28px;
   }
 }
+
+/* Keep a return action reachable from every program and source-detail result. */
+.results-view .edit-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  min-height: 48px;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  border: 1px solid #dce5ee;
+  border-radius: 10px;
+  background: #f2f6fa;
+  color: #2868a7;
+  font-size: 15px;
+}
+@media (max-width: 650px) {
+  .results-view .workspace {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  }
+  .results-view .edit-search {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: center;
+    min-height: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding: 18px 20px calc(18px + env(safe-area-inset-bottom, 0px));
+    margin: 0;
+    border: 0;
+    border-top: 1px solid #dce5ee;
+    border-radius: 0;
+    background: #10375f;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 -4px 18px #10375f12;
+  }
+}
