@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
  [Parameter(Mandatory=$true)][ValidateSet('Push','Pull','Backup','Restore','Start','Build','Tree','Open')][string]$Action,
  [switch]$NoPause,
@@ -8,6 +8,13 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')).TrimEnd('\')
 $backupRoot = Join-Path $projectRoot 'Backups'
 $skipDirs = @('.git','node_modules','Backups','dist','out','.next','.vinext','.vite','.wrangler','.vercel','coverage','work','outputs')
+function Get-Checksum {
+ param([string]$FilePath)
+ $stream=[IO.File]::OpenRead($FilePath)
+ $algorithm=[Security.Cryptography.SHA256]::Create()
+ try { return [BitConverter]::ToString($algorithm.ComputeHash($stream)).Replace('-','') }
+ finally { $stream.Dispose(); $algorithm.Dispose() }
+}
 function Run-Git {
  param([string[]]$GitArgs)
  & git -C $projectRoot @GitArgs
@@ -45,8 +52,8 @@ function New-VerifiedBackup {
   $target=Assert-Child -Path (Join-Path $destination $relative) -Parent $destination
   New-Item -ItemType Directory -Path (Split-Path -Parent $target) -Force | Out-Null
   Copy-Item -LiteralPath $file.FullName -Destination $target
-  $sourceHash=(Get-FileHash -LiteralPath $file.FullName -Algorithm SHA256).Hash
-  if((Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash -ne $sourceHash){throw "Backup verification failed: $relative"}
+  $sourceHash=(Get-Checksum -FilePath $file.FullName)
+  if((Get-Checksum -FilePath $target) -ne $sourceHash){throw "Backup verification failed: $relative"}
   $manifest+=@{path=$relative;sha256=$sourceHash}
  }
  # Git history is stored as a portable bundle, separate from OneDrive's Git metadata.
@@ -55,7 +62,7 @@ function New-VerifiedBackup {
  Run-Git -GitArgs @('bundle','verify',$bundle)
  $commit=(& git -C $projectRoot rev-parse HEAD)
  if($LASTEXITCODE -ne 0){throw 'Could not read current commit.'}
- @{created=(Get-Date -Format o);project='FP-AIMS';commit=$commit;files=$manifest;bundleSha256=(Get-FileHash -LiteralPath $bundle -Algorithm SHA256).Hash} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $destination 'backup-manifest.json') -Encoding UTF8
+ @{created=(Get-Date -Format o);project='FP-AIMS';commit=$commit;files=$manifest;bundleSha256=(Get-Checksum -FilePath $bundle)} | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $destination 'backup-manifest.json') -Encoding UTF8
  'COMPLETE - source files SHA256 verified; Git history bundle verified.' | Set-Content -LiteralPath (Join-Path $destination 'BACKUP_COMPLETE.txt')
  Write-Host "Backup verified: $($files.Count) files plus Git history."
  return $destination
@@ -99,9 +106,9 @@ try {
     $file=Assert-Child -Path (Join-Path $source $entry.path) -Parent $source
     $null=Assert-Child -Path (Join-Path $projectRoot $entry.path) -Parent $projectRoot
     if(($entry.path -split '[\\/]')[0] -in $skipDirs){throw 'Backup contains an excluded directory.'}
-    if((Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash -ne $entry.sha256){throw "Damaged backup: $($entry.path)"}
+    if((Get-Checksum -FilePath $file) -ne $entry.sha256){throw "Damaged backup: $($entry.path)"}
    }
-   if((Get-FileHash -LiteralPath (Join-Path $source 'history.bundle') -Algorithm SHA256).Hash -ne $manifest.bundleSha256){throw 'Git history bundle checksum does not match.'}
+   if((Get-Checksum -FilePath (Join-Path $source 'history.bundle')) -ne $manifest.bundleSha256){throw 'Git history bundle checksum does not match.'}
    Write-Host "Restore source: $source"
    Write-Host 'Restore replaces backed-up project files, preserves .git and .env files, and leaves newer extra files in place.'
    Write-Host 'A verified safety backup is created first. Nothing is pushed to GitHub automatically.'
