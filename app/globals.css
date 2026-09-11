@@ -1477,8 +1477,8 @@ body {
   }
   .match-card {
     min-width: 0;
-    padding: 20px;
-    gap: 12px;
+    padding: 16px;
+    gap: 10px;
     border-radius: 12px;
   }
   .match-content h3 {
@@ -1493,6 +1493,23 @@ body {
   }
   .item-icon {
     flex-shrink: 0;
+  }
+  .match-card summary {
+    padding-top: 9px;
+  }
+  .alternative-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+  .alternative-card .available {
+    margin-bottom: 8px;
+  }
+  .alternative-card ul {
+    margin: 10px 0 12px;
+    line-height: 1.5;
+  }
+  .alternative-card li + li {
+    margin-top: 3px;
   }
   .app.no-results-view .workspace {
     max-width: 860px;
