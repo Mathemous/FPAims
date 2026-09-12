@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ArrowLeft, ExternalLink, Search } from 'lucide-react';
 import source from '@/data/eplan-source.json';
+import { matchesEplanQuery } from '@/lib/eplan-search';
 
 const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 const displayProgramName = (id: string, name: string) => {
@@ -19,9 +20,7 @@ type EplanProps = {
 export default function Eplan({ program, query, onProgramChange, onQueryChange }: EplanProps) {
   const [expandedNarratives, setExpandedNarratives] = useState<Set<string>>(new Set());
   const selectedProgram = source.programs.find(item => item.id === program)!;
-  const matchingRows = useMemo(() => source.rows.filter(row =>
-    [row.account, row.category, row.line, row.subcategory, row.narrative, row.organization, row.organizationCode, row.programCode, row.tags]
-      .join(' ').toLowerCase().includes(query.trim().toLowerCase())), [query]);
+  const matchingRows = useMemo(() => source.rows.filter(row => matchesEplanQuery(row, query)), [query]);
   const rows = useMemo(() => matchingRows.filter(row => row.program === program), [matchingRows, program]);
   const resultCounts = useMemo(() => Object.fromEntries(source.programs.map(item =>
     [item.id, matchingRows.filter(row => row.program === item.id).length]

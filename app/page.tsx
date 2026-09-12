@@ -20,6 +20,8 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { programs, searchRecords, groupMatches, narrativeExcerpt } from '@/lib/search.mjs';
 import records from '@/lib/records';
 import source from '@/data/eplan-meta.json';
+import eplanSource from '@/data/eplan-source.json';
+import { matchesEplanQuery } from '@/lib/eplan-search';
 import Database from './database';
 import Eplan from './eplan';
 type Item = (typeof records)[number];
@@ -155,9 +157,9 @@ export default function Home() {
     [query],
   );
   const programEntryCounts = useMemo(() => {
-    const entries = searchRecords(records, word);
+    const entries = eplanSource.rows.filter(row => matchesEplanQuery(row, word));
     return Object.fromEntries(
-      programs.map((p) => [p.id, entries.filter((r: Item) => r.program === p.id).length]),
+      programs.map((p) => [p.id, entries.filter(row => row.program === p.id).length]),
     );
   }, [word]);
   const own = matching.filter((r: Item) => r.program === program),
@@ -201,7 +203,6 @@ export default function Home() {
             if (values.length) changeProgram(String(values[0]));
           }}
           aria-labelledby="program-label"
-          aria-describedby="program-count"
         >
           {programs.map((p, index) => (
             <ToggleGroupItem
@@ -220,19 +221,13 @@ export default function Home() {
               ) : (
                 p.name
               )}
-              {programEntryCounts && (
-                <span id={`entries-${p.id}`} className="program-entry-count">
-                  {programEntryCounts[p.id]}{' '}
-                  {programEntryCounts[p.id] === 1 ? 'entry' : 'entries'}
-                </span>
-              )}
+              <span id={`entries-${p.id}`} className="program-entry-count">
+                {programEntryCounts[p.id]}{' '}
+                {programEntryCounts[p.id] === 1 ? 'result' : 'results'}
+              </span>
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
-        <p id="program-count" className="program-count">
-          {records.filter((r) => r.program === program).length} entries in this
-          program
-        </p>
         <a href="#eplan" className="database-link">ePlan budgets</a>
       </div>
       <div className="search-field">
