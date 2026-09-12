@@ -1158,6 +1158,7 @@ body {
 }
 .program-buttons {
   display: grid;
+  align-items: stretch;
   width: 100%;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
