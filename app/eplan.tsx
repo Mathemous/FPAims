@@ -12,6 +12,15 @@ export default function Eplan() {
   const rows = useMemo(() => source.rows.filter(row => row.program === program &&
     [row.account, row.category, row.line, row.subcategory, row.narrative, row.organization, row.organizationCode, row.programCode, row.tags]
       .join(' ').toLowerCase().includes(query.trim().toLowerCase())), [program, query]);
+  const highlight = (value: string | number) => {
+    const text = String(value);
+    const term = query.trim();
+    if (!term) return text;
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return text.split(new RegExp(`(${escaped})`, 'gi')).map((part, index) =>
+      part.toLowerCase() === term.toLowerCase() ? <mark className="eplan-highlight" key={index}>{part}</mark> : part
+    );
+  };
 
   return <div className="app database-view eplan-view">
     <header className="app-header"><div className="header-inner">
@@ -47,18 +56,18 @@ export default function Eplan() {
           <div className="eplan-detail-head"><strong>Budget Detail</strong><strong>Narrative Description</strong></div>
           <div className="eplan-detail-body">
             <dl className="eplan-budget-fields">
-              <div><dt>Account Number:</dt><dd>{row.account} - {row.category}</dd></div>
-              <div><dt>Line Item Number:</dt><dd>{row.line} - {row.subcategory}</dd></div>
-              <div><dt>Budget Tags:</dt><dd>{row.tags || '—'}</dd></div>
-              <div><dt>Optional Program Code:</dt><dd>{row.programCode || '—'}</dd></div>
-              <div><dt>Location Code:</dt><dd>{row.organization} ({row.organizationCode || 'not specified'})</dd></div>
+              <div><dt>Account Number:</dt><dd>{highlight(`${row.account} - ${row.category}`)}</dd></div>
+              <div><dt>Line Item Number:</dt><dd>{highlight(`${row.line} - ${row.subcategory}`)}</dd></div>
+              <div><dt>Budget Tags:</dt><dd>{highlight(row.tags || '—')}</dd></div>
+              <div><dt>Optional Program Code:</dt><dd>{highlight(row.programCode || '—')}</dd></div>
+              <div><dt>Location Code:</dt><dd>{highlight(`${row.organization} (${row.organizationCode || 'not specified'})`)}</dd></div>
               <div><dt>Cost:</dt><dd className="eplan-money">{dollars.format(Number(row.total))}</dd></div>
               <div><dt>Line Item Total:</dt><dd className="eplan-money">{dollars.format(Number(row.total))}</dd></div>
               <div><dt>Source Row:</dt><dd>{row.sourceId}</dd></div>
               <div><dt>Last Updated:</dt><dd>{row.updatedAt || 'Not specified'}</dd></div>
             </dl>
             <div className="eplan-narrative">
-              <p className={`source-narrative${isLong && !isExpanded ? ' is-collapsed' : ''}`}>{narrative}</p>
+              <p className={`source-narrative${isLong && !isExpanded ? ' is-collapsed' : ''}`}>{highlight(narrative)}</p>
               {isLong && <button type="button" className="eplan-narrative-toggle" aria-expanded={isExpanded} onClick={() => setExpandedNarratives(current => {
                 const next = new Set(current);
                 if (isExpanded) next.delete(row.sourceId); else next.add(row.sourceId);
