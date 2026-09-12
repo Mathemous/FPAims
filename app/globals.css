@@ -1865,3 +1865,15 @@ body {
   overflow-y: auto;
   overflow-wrap: anywhere;
 }
+
+/* Keep counts on a shared bottom row, regardless of label wrapping. */
+.program-buttons .program-touch {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  justify-items: center;
+}
+.program-buttons .program-touch .program-entry-count {
+  margin-top: 0;
+  align-self: end;
+}
