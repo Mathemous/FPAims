@@ -1877,3 +1877,20 @@ body {
   margin-top: 0;
   align-self: end;
 }
+/* Compact source context for the mobile material cards. */
+.match-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.match-card-top .eyebrow { min-width: 0; }
+.match-program { flex-shrink: 0; border-radius: 6px; background: #edf3fa; color: #214b73; padding: 4px 7px; font-size: 11px; font-weight: 700; line-height: 1.4; }
+.match-content .match-schools { color: #234f74; font-size: 14px; line-height: 1.5; margin: 8px 0; font-weight: 600; }
+.school-source { border-top: 1px solid #dce5ee; padding-top: 10px; margin-top: 10px; }
+.read-narrative { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 0; color: #1767a8; background: none; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.narrative-dialog { position: fixed; inset: 0; margin: auto; padding: 0; width: min(640px, calc(100vw - 28px)); max-height: calc(100dvh - 64px); border: 1px solid #cbd9e7; border-radius: 18px; background: #fff; color: #17324e; box-shadow: 0 20px 70px #0003; overflow: hidden; }
+.narrative-dialog[open] { display: flex; flex-direction: column; }
+.narrative-dialog::backdrop { background: #0b223d99; }
+.narrative-dialog-header { display: flex; flex-shrink: 0; align-items: flex-start; gap: 12px; justify-content: space-between; padding: 20px; border-bottom: 1px solid #dce5ee; }
+.narrative-dialog-header h2 { font-size: 20px; font-weight: 700; margin-top: 6px; }
+.narrative-dialog-header button { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 8px; background: #edf3fa; color: #17324e; }
+.narrative-dialog-body { padding: 20px; overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
+.narrative-dialog-body section + section { border-top: 1px solid #dce5ee; margin-top: 24px; padding-top: 24px; }
+.narrative-source-label { color: #5b7186; font-size: 12px; margin-bottom: 16px; }
+.narrative-dialog .source-narrative { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 15px; line-height: 1.65; }

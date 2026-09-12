@@ -17,8 +17,9 @@ import {
   X,
 } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { programs, searchRecords, groupMatches, narrativeExcerpt } from '@/lib/search.mjs';
+import { programs, searchRecords, groupMatches } from '@/lib/search.mjs';
 import records from '@/lib/records';
+import mobileDetails from '@/data/mobile-details.json';
 import source from '@/data/eplan-meta.json';
 import eplanSource from '@/data/eplan-source.json';
 import { matchesEplanQuery } from '@/lib/eplan-search';
@@ -37,47 +38,62 @@ function Brand({ compact = false }: { compact?: boolean }) {
     </div>
   );
 }
-function MatchCard({
-  item,
-  count,
-  query,
-}: {
-  item: Item;
-  count: number;
-  query: string;
-}) {
+const shortPrograms: Record<string, string> = {
+  'title-1-a': '1A', 'title-1-neglected': '1A Neglected',
+  'title-1-d': '1D', 'title-2-a': 'II A', 'title-4': 'IV',
+};
+type MobileSource = { sourceId: string; associations: { school: string; category?: string; excerpt: string }[] };
+const detailsById = mobileDetails as Record<string, MobileSource[]>;
+const narrativesById = new Map(eplanSource.rows.map(row => [row.sourceId, row]));
+function MatchCard({ item, count }: { item: Item; count: number; query: string }) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const titleId = React.useId();
+  const linked = detailsById[item.id] || [];
+  const sources = linked.flatMap(link => {
+    const row = narrativesById.get(link.sourceId);
+    return row ? [{ ...link, row }] : [];
+  });
+  const associations = sources.flatMap(s => s.associations).filter((a, i, all) =>
+    all.findIndex(b => b.school === a.school && b.excerpt === a.excerpt) === i);
+  const schools = [...new Set(associations.map(a => a.school))];
+  const categories = [...new Set(associations.flatMap(a => a.category ? [a.category] : []))];
   return (
     <article className="match-card">
-      <div className="item-icon">
-        <BookOpen size={21} />
-      </div>
+      <div className="item-icon"><BookOpen size={21} /></div>
       <div className="match-content">
-        <span className="eyebrow">{item.subcategory}</span>
+        <div className="match-card-top">
+          <span className="eyebrow">{categories.length === 1 ? categories[0] : item.subcategory}</span>
+          <span className="match-program" aria-label={programs.find(p => p.id === item.program)?.name}>{shortPrograms[item.program]}</span>
+        </div>
         <h3>{item.item}</h3>
-        {item.narrative && <p className="narrative-excerpt">{narrativeExcerpt(item.narrative, query)}</p>}
-        <p className="account">
-          {item.account} · {item.category}
-        </p>
+        {schools.length > 0 && <p className="match-schools">{schools.slice(0, 2).join(' · ')}{schools.length > 2 ? ' + ' + (schools.length - 2) + ' more' : ''}</p>}
+        <p className="account">{item.account} · {item.category}</p>
         <details>
-          <summary>
-            Source details <ChevronDown size={16} />
-          </summary>
+          <summary>Source details <ChevronDown size={16} /></summary>
           <div className="details-content">
-            {item.narrative && <>
-              <p><strong>Original ePlan narrative</strong> · Source {item.sourceId}</p>
-              <p className="source-narrative">{item.narrative}</p>
-              <p>Use the original narrative above for any named location, institution, or set-aside.</p>
-            </>}
-            <p>
-              <strong>Line item:</strong> {item.line}
-            </p>
-            <p><a href="#eplan">Review full ePlan budget detail</a></p>
-            <p>
-              {count} database {count === 1 ? 'entry' : 'entries'} · FY {source.year} ·
-              Revision {source.revision}
-            </p>
+            <p><strong>Line item:</strong> {item.line}</p>
+            {associations.map((a, i) => <div className="school-source" key={i}>
+              <p><strong>{a.school}</strong>{a.category ? ' · ' + a.category : ''}</p>
+              <p>{a.excerpt}</p>
+            </div>)}
+            <p>{count} database {count === 1 ? 'entry' : 'entries'} · FY {source.year} · Revision {source.revision}</p>
           </div>
         </details>
+        {sources.length > 0 && <>
+          <button type="button" className="read-narrative" onClick={() => dialogRef.current?.showModal()}>Read full narrative</button>
+          <dialog className="narrative-dialog" ref={dialogRef} aria-labelledby={titleId}>
+            <div className="narrative-dialog-header">
+              <div><span className="eyebrow">{shortPrograms[item.program]} · Full narrative</span><h2 id={titleId}>{item.item}</h2></div>
+              <button type="button" aria-label="Close full narrative" onClick={() => dialogRef.current?.close()} autoFocus><X size={24} /></button>
+            </div>
+            <div className="narrative-dialog-body">
+              {sources.map(({row}) => <section key={row.sourceId}>
+                <p className="narrative-source-label">Account {row.account} · Line {row.line} · Source {row.sourceId}</p>
+                <p className="source-narrative">{row.narrative}</p>
+              </section>)}
+            </div>
+          </dialog>
+        </>}
       </div>
     </article>
   );

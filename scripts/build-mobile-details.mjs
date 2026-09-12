@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import { sourceContext } from '../lib/source-context.mjs';
+const records = JSON.parse(fs.readFileSync('data/records.json','utf8'));
+const source = JSON.parse(fs.readFileSync('data/eplan-source.json','utf8'));
+const details = Object.fromEntries(records.map(item => [item.id, sourceContext(item, source.rows)]));
+fs.writeFileSync('data/mobile-details.json', JSON.stringify(details, null, 2)+'\n');
+console.log('Linked records:', Object.values(details).filter(x => x.length).length);
+console.log('Records with named schools:', Object.values(details).filter(x => x.some(s=>s.associations.length)).length);
+console.log(JSON.stringify(details['title-1-neglected-9']));
+console.log(JSON.stringify(details['title-1-neglected-10']));
