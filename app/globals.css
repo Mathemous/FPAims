@@ -1667,6 +1667,7 @@ body {
 .eplan-source-stamp strong { color: #123858; font-size: 16px; }
 .eplan-links { display: flex; flex-wrap: wrap; gap: 12px 24px; margin: 16px 0; color: #2269aa; font-size: 14px; }
 .eplan-links a { display: inline-flex; align-items: center; gap: 6px; text-decoration: underline; text-underline-offset: 3px; }
+.eplan-view .database-filters .eplan-links { justify-content: flex-end; align-items: center; margin: 0 0 11px; }
 .eplan-link-path { margin: -5px 0 16px; color: #526b82; font-size: 14px; line-height: 1.5; }
 .eplan-count { margin: 18px 0 10px; color: #586d82; font-size: 14px; }
 .eplan-detail-list { display: grid; gap: 12px; padding-bottom: 18px; }
@@ -1687,6 +1688,7 @@ body {
 @media (max-width: 650px) {
   .eplan-heading { display: block; }
   .eplan-source-stamp { margin-top: 14px; }
+  .eplan-view .database-filters .eplan-links { justify-content: flex-start; margin: 4px 0 0; }
   .eplan-detail-head { display: none; }
   .eplan-detail-body { grid-template-columns: 1fr; }
   .eplan-budget-fields::before { content: "Budget Detail"; display: block; margin: -18px -20px 2px; padding: 6px 20px; background: #075184; color: white; font-size: 14px; font-weight: 700; }
@@ -1761,14 +1763,20 @@ body {
 .database-view .database-filters label { max-width: none; gap: 5px; font-size: 13px; }
 .database-view .database-filters input,
 .database-view .database-filters select { min-height: 42px; padding: 8px 12px; }
+.eplan-view .database-filters { grid-template-columns: 280px minmax(280px, 480px) minmax(300px, 1fr); align-items: end; }
 .database-view .database-pagination { margin: 10px 0; }
 .database-view .database-table-wrap { max-height: none; }
 .database-view .database-table th { position: static; }
+@media (min-width: 651px) and (max-width: 1050px) {
+  .eplan-view .database-filters { grid-template-columns: 280px minmax(280px, 1fr); }
+  .eplan-view .database-filters .eplan-links { grid-column: 1 / -1; margin-top: 2px; }
+}
 @media (max-width: 650px) {
   .database-heading { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .database-view .page-title h1 { font-size: 25px; }
   .database-info > summary { padding: 8px 0; }
   .database-view .database-filters { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 8px; }
+  .eplan-view .database-filters { grid-template-columns: minmax(0, 1fr); }
   .database-view .database-pagination { gap: 8px; font-size: 12px; }
   .database-pagination > div { gap: 8px; }
 }

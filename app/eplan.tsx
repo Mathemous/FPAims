@@ -24,12 +24,12 @@ export default function Eplan() {
         </div>
         <div className="eplan-source-stamp"><span>Selected application</span><strong>{source.application} {source.applicationDate}</strong><small>{source.status}</small></div>
       </div>
-      <nav className="eplan-links" aria-label="Budget navigation"><a href="#database">Individual item database</a><a href="https://eplan.tn.gov/Search/DistrictSearch.aspx" target="_blank" rel="noopener noreferrer">Open ePlan organization search <ExternalLink size={14} /></a></nav>
       <div className="database-filters">
         <label>Program<select value={program} onChange={e => { setProgram(e.target.value); setQuery(''); }}>
           {source.programs.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select></label>
         <label>Find in this program<input type="search" value={query} maxLength={150} onChange={e => setQuery(e.target.value)} placeholder="Narrative, school, account, or line item" /></label>
+        <nav className="eplan-links" aria-label="Budget navigation"><a href="#database">Individual item database</a><a href="https://eplan.tn.gov/Search/DistrictSearch.aspx" target="_blank" rel="noopener noreferrer">Open ePlan organization search <ExternalLink size={14} /></a></nav>
       </div>
       <p className="eplan-count" aria-live="polite">{rows.length} budget detail rows for {selectedProgram.name}{query.trim() ? ' matching your search' : ''}</p>
       <div className="eplan-detail-list">
