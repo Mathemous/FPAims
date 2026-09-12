@@ -38,10 +38,11 @@ export default function Database() {
         </div>
         <details className="database-info">
           <summary>Source &amp; updates</summary>
-        <p className="database-source">Source: Knox County Schools ePlan budget narratives. This is the published database; use Update from ePlan to check for changes. Original workbook entries retain their item names; updated sections include the complete source narrative. School and set-aside details remain part of the source.</p>
+        <p className="database-source">Individual items from the original workbook. Full budget narratives are available separately in the ePlan budgets view. Changed source sections require item-level review before this database can be updated.</p>
         <DatabaseUpdater />
         </details>
         </div>
+        <nav className="eplan-links" aria-label="Database navigation"><a href="#eplan">Browse full ePlan budgets and narratives</a></nav>
         <div className="database-filters">
           <label>Program
             <select value={program} onChange={(e) => { setProgram(e.target.value); setPage(0); }}>

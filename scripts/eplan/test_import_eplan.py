@@ -1,5 +1,5 @@
 import unittest
-from import_eplan import reconcile
+from import_eplan import reconcile, require_item_review
 
 def row(**changes):
     return dict({'program': 'title-4', 'account': '71100', 'line': '429',
@@ -12,6 +12,13 @@ def source(rows=None, **changes):
     return dict({'year': 2027, 'revision': 1, 'rows': rows or [row()]}, **changes)
 
 class ImportTests(unittest.TestCase):
+    def test_publish_guard_rejects_changed_item_groups(self):
+        with self.assertRaisesRegex(ValueError, 'Item-level review required'):
+            require_item_review({'changedGroups': ['title-4|71100|429']})
+
+    def test_publish_guard_allows_unchanged_item_groups(self):
+        require_item_review({'changedGroups': []})
+
     def setUp(self):
         self.records = [{'id': 'original-1', 'program': 'title-4', 'account': '71100', 'line': '429',
                          'category': 'Regular Instruction', 'subcategory': 'Art', 'item': 'Paint', 'recipient': 'School A'}]

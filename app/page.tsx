@@ -21,6 +21,7 @@ import { programs, searchRecords, groupMatches, narrativeExcerpt } from '@/lib/s
 import records from '@/lib/records';
 import source from '@/data/eplan-meta.json';
 import Database from './database';
+import Eplan from './eplan';
 type Item = (typeof records)[number];
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
@@ -85,6 +86,7 @@ function MatchCard({
 export default function Home() {
   const [entered, setEntered] = useState(() => location.hash === '#search');
   const [databaseOpen, setDatabaseOpen] = useState(() => location.hash === '#database');
+  const [eplanOpen, setEplanOpen] = useState(() => location.hash === '#eplan');
   const [program, setProgram] = useState('title-1-a');
   const [word, setWord] = useState('');
   const [query, setQuery] = useState<string | null>(null);
@@ -99,6 +101,7 @@ export default function Home() {
     const sync = () => {
       setEntered(location.hash === '#search');
       setDatabaseOpen(location.hash === '#database');
+      setEplanOpen(location.hash === '#eplan');
     };
     window.addEventListener('hashchange', sync);
     return () => window.removeEventListener('hashchange', sync);
@@ -235,7 +238,7 @@ export default function Home() {
           {records.filter((r) => r.program === program).length} entries in this
           program
         </p>
-        <a href="#database" className="database-link">View database</a>
+        <a href="#database" className="database-link">View database</a><a href="#eplan" className="database-link">ePlan budgets</a>
       </div>
       <div className="search-field">
         <label htmlFor="search">Item or service</label>
@@ -278,6 +281,7 @@ export default function Home() {
       </button>
     </form>
   );
+  if (eplanOpen) return <Eplan />;
   if (databaseOpen) return <Database />;
   if (!entered)
     return (
@@ -316,7 +320,7 @@ export default function Home() {
               Select a program. Search. Discover.
             </span>
           </section>
-          <p className="welcome-footer">Materials. Services. Confidence.<a href="#database" className="database-link">View database</a></p>
+          <p className="welcome-footer">Materials. Services. Confidence.<a href="#database" className="database-link">View database</a><a href="#eplan" className="database-link">ePlan budgets</a></p>
         </div>
       </main>
     );

@@ -1,4 +1,4 @@
-﻿[CmdletBinding()]
+[CmdletBinding()]
 param(
  [Parameter(Mandatory=$true)][ValidateSet('Push','Pull','Backup','Restore','Start','Build','Tree','Open')][string]$Action,
  [switch]$NoPause,
@@ -6,7 +6,8 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..')).TrimEnd('\')
-$backupRoot = Join-Path $projectRoot 'Backups'
+$workspaceRoot = Split-Path -Parent $projectRoot
+$backupRoot = Join-Path $workspaceRoot 'Backups'
 $skipDirs = @('.git','node_modules','Backups','dist','out','.next','.vinext','.vite','.wrangler','.vercel','coverage','work','outputs')
 function Get-Checksum {
  param([string]$FilePath)
@@ -45,10 +46,10 @@ function New-VerifiedBackup {
  if(Test-Path -LiteralPath $destination){throw 'A backup already exists with this timestamp.'}
  New-Item -ItemType Directory -Path $destination -Force | Out-Null
  Write-Host "Backing up FP AIMS to $destination"
- $files=@(Get-ProjectFiles -Folder $projectRoot)
+ $files=@(Get-ProjectFiles -Folder $projectRoot)+@(Get-ChildItem -LiteralPath $workspaceRoot -Filter '*.bat' -File)
  $manifest=@()
  foreach($file in $files){
-  $relative=$file.FullName.Substring($projectRoot.Length+1)
+  $relative=if($file.DirectoryName -eq $workspaceRoot){$file.Name}else{$file.FullName.Substring($projectRoot.Length+1)}
   $target=Assert-Child -Path (Join-Path $destination $relative) -Parent $destination
   New-Item -ItemType Directory -Path (Split-Path -Parent $target) -Force | Out-Null
   Copy-Item -LiteralPath $file.FullName -Destination $target
@@ -66,6 +67,14 @@ function New-VerifiedBackup {
  'COMPLETE - source files SHA256 verified; Git history bundle verified.' | Set-Content -LiteralPath (Join-Path $destination 'BACKUP_COMPLETE.txt')
  Write-Host "Backup verified: $($files.Count) files plus Git history."
  return $destination
+}
+function Get-RestoreTarget {
+ param([string]$RelativePath)
+ # Existing flat backups used these same relative names for the launchers.
+ if($RelativePath -notmatch '[\\/]' -and [IO.Path]::GetExtension($RelativePath) -eq '.bat') {
+  return (Assert-Child -Path (Join-Path $workspaceRoot $RelativePath) -Parent $workspaceRoot)
+ }
+ return (Assert-Child -Path (Join-Path $projectRoot $RelativePath) -Parent $projectRoot)
 }
 $exitCode=0
 Push-Location -LiteralPath $projectRoot
@@ -104,7 +113,7 @@ try {
    if($manifest.project -ne 'FP-AIMS'){throw 'This backup is not an FP AIMS backup.'}
    foreach($entry in $manifest.files){
     $file=Assert-Child -Path (Join-Path $source $entry.path) -Parent $source
-    $null=Assert-Child -Path (Join-Path $projectRoot $entry.path) -Parent $projectRoot
+    $null=Get-RestoreTarget -RelativePath $entry.path
     if(($entry.path -split '[\\/]')[0] -in $skipDirs){throw 'Backup contains an excluded directory.'}
     if((Get-Checksum -FilePath $file) -ne $entry.sha256){throw "Damaged backup: $($entry.path)"}
    }
@@ -117,9 +126,16 @@ try {
    $null=New-VerifiedBackup
    foreach($entry in $manifest.files){
     if((Split-Path -Leaf $entry.path) -like '.env*'){continue}
-    $target=Assert-Child -Path (Join-Path $projectRoot $entry.path) -Parent $projectRoot
+    # Keep the layout-aware restore implementation when recovering an older flat-layout backup.
+    if($entry.path.Replace('\','/') -eq 'scripts/project-tools.ps1'){continue}
+    $target=Get-RestoreTarget -RelativePath $entry.path
     New-Item -ItemType Directory -Path (Split-Path -Parent $target) -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $source $entry.path) -Destination $target -Force
+    if([IO.Path]::GetDirectoryName($target) -eq $workspaceRoot -and [IO.Path]::GetExtension($target) -eq '.bat') {
+     $launcher=Get-Content -LiteralPath $target -Raw
+     $launcher=$launcher.Replace('%~dp0scripts\project-tools.ps1','%~dp0FP_Aims\scripts\project-tools.ps1')
+     Set-Content -LiteralPath $target -Value $launcher -Encoding ascii
+    }
    }
    Run-Npm -NpmArgs @('ci')
    Run-Npm -NpmArgs @('test')
@@ -129,8 +145,8 @@ try {
   }
   'Start' {
    if(-not(Test-Path -LiteralPath (Join-Path $projectRoot 'node_modules'))){Run-Npm -NpmArgs @('ci')}
-   Write-Host 'Open the Local URL shown below. Press Ctrl+C to stop the preview.'
-   Run-Npm -NpmArgs @('run','dev','--','--port','5180','--strictPort','--open')
+   Write-Host 'When Vite is ready, use http://localhost:5180 in your browser. Press Ctrl+C to stop.'
+   Run-Npm -NpmArgs @('run','dev','--','--port','5180','--strictPort')
   }
   'Build' { Run-Npm -NpmArgs @('test'); Run-Npm -NpmArgs @('run','build') }
   'Tree' {
@@ -142,5 +158,5 @@ try {
  }
 } catch { Write-Host "ERROR: $($_.Exception.Message)" -ForegroundColor Red; $exitCode=1 }
 finally { Pop-Location }
-if(-not $NoPause){Read-Host 'Press Enter to close' | Out-Null}
+if(-not $NoPause){Read-Host 'You can close this window' | Out-Null}
 exit $exitCode

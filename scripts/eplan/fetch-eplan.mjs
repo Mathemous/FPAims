@@ -70,7 +70,9 @@ try {
     await writeFile(resolve(output, `${id}.xlsx`), bytes);
     console.log(`Downloaded ${name}: ${bytes.length} bytes`);
   }
-  await writeFile(resolve(output, 'manifest.json'), JSON.stringify({ schemaVersion: 1, district: 'Knox County Schools', districtCode: '470', year: Number(year), revision: approved[0].revision, status: status.trim(), checkedAt: new Date().toISOString(), source: 'https://eplan.tn.gov/', programs: programs.map(([id, name]) => ({ id, name })) }, null, 2) + '\n');
+  const applicationDate = approved[0].cells[4];
+  if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(applicationDate)) throw new Error('The approved Consolidated application date is missing or invalid.');
+  await writeFile(resolve(output, 'manifest.json'), JSON.stringify({ schemaVersion: 1, district: 'Knox County Schools', districtCode: '470', year: Number(year), application: 'Consolidated', applicationDate, revision: approved[0].revision, status: status.trim(), checkedAt: new Date().toISOString(), source: 'https://eplan.tn.gov/', programs: programs.map(([id, name]) => ({ id, name })) }, null, 2) + '\n');
 } finally {
   await browser.close();
 }

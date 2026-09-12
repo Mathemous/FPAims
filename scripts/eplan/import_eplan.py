@@ -127,6 +127,11 @@ def prepare(download_dir):
     manifest['fingerprint'] = hashlib.sha256(json.dumps(rows, sort_keys=True).encode()).hexdigest()
     return manifest
 
+def require_item_review(report):
+    if report['changedGroups']:
+        raise ValueError('Item-level review required. Source narratives cannot replace individual item lists. No app data was updated.')
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('download_dir', type=Path)
@@ -145,6 +150,7 @@ def main():
     else:
         previous = json.loads(source_path.read_text(encoding='utf-8'))
         updated, report = reconcile(records, previous, incoming)
+        require_item_review(report)
     report.update({'checkedAt': incoming['checkedAt'], 'year': incoming['year'], 'revision': incoming['revision'], 'sourceRows': len(incoming['rows']), 'entries': len(updated)})
     (args.download_dir / 'report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     if not args.baseline and all(previous.get(k) == incoming.get(k) for k in ('fingerprint', 'year', 'revision', 'status')):

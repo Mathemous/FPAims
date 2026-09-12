@@ -1,3 +1,13 @@
+# Current update status
+
+The app now has a separate #eplan view of the saved source budgets, grouped by program, account, and object line, including full narratives and recipient metadata. This is a snapshot, not a live connection.
+
+Automatic item replacement is blocked. The importer raises an error before writing app data when changed groups require item review. The app no longer links users to the old publishing workflow. No individual-item extractor or approval interface is implemented yet.
+
+Next: extract structured item proposals with source IDs, exact supporting text, recipients and restrictions; compare them against the original workbook; review additions, edits and removals; only then publish reviewed item records. Full narratives belong in the source archive and must never substitute for individual item names.
+
+## Legacy implementation notes (publishing instructions below are superseded)
+
 # Updating from Knox County Schools ePlan
 
 Open **View database → Update from ePlan → Check ePlan on GitHub**. Sign in with repository write access. Run **Update Knox County ePlan** on `main`, selecting the fiscal year (initially 2027). The updater chooses that year's highest approved Consolidated revision and downloads the five program budgets through ePlan's public interface. It never signs in to or writes to ePlan.

@@ -48,7 +48,7 @@ Welcome and search screens use a URL hash so they work on ordinary static hostin
 
 ## Windows launchers
 
-Double-click these files in the FP-Aims folder. They follow the folder if it is moved; no computer-specific setup is required.
+Double-click the batch files in the parent FP-Aims folder. All application files, dependencies, scripts, and Git history live in FP_Aims underneath it. Backups remain in the parent Backups folder. The launchers use relative paths, so this entire parent folder can be moved together.
 
 - **Push.bat**: tests and builds, commits local changes if needed, then pushes main. Vercel publishes new app changes automatically. Stops if a step fails; never force-pushes.
 - **Git Pull.bat**: requires a clean working tree, pulls fast-forward only, then installs locked dependencies.
@@ -59,5 +59,5 @@ Double-click these files in the FP-Aims folder. They follow the folder if it is 
 - **Tree Generator.bat**: generates `Tree.md`, excluding dependencies, history and backup folders.
 - **Open Live App.bat**: opens the public Vercel app.
 
-For unattended use, add `-NoPause` to any launcher. The shared implementation lives in `scripts/project-tools.ps1`. Restoring uses a file overlay, not a destructive directory mirror; Git history is available in each backup's `history.bundle` for advanced recovery.
+For unattended use, add `-NoPause` to any launcher. The shared implementation lives in `FP_Aims/scripts/project-tools.ps1`. Backups include both app source and the parent launchers. Existing flat backups restore launcher files to the parent and app files to the child. Restoring uses a file overlay, not a destructive directory mirror; Git history is available in each backup's `history.bundle` for advanced recovery.
 
