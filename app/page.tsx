@@ -25,6 +25,7 @@ import { matchesEplanQuery } from '@/lib/eplan-search';
 import Database from './database';
 import Eplan from './eplan';
 type Item = (typeof records)[number];
+const usesPhoneLayout = () => window.matchMedia('(max-width: 650px)').matches;
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <div className={compact ? 'brand compact' : 'brand'}>
@@ -82,9 +83,9 @@ function MatchCard({
   );
 }
 export default function Home() {
-  const [entered, setEntered] = useState(() => location.hash === '#search');
+  const [entered, setEntered] = useState(() => location.hash === '#search' || (location.hash === '#eplan' && usesPhoneLayout()));
   const [databaseOpen, setDatabaseOpen] = useState(() => location.hash === '#database');
-  const [eplanOpen, setEplanOpen] = useState(() => location.hash === '#eplan');
+  const [eplanOpen, setEplanOpen] = useState(() => location.hash === '#eplan' && !usesPhoneLayout());
   const [program, setProgram] = useState('title-1-a');
   const [word, setWord] = useState('');
   const [query, setQuery] = useState<string | null>(null);
@@ -96,13 +97,19 @@ export default function Home() {
   const resultsRef = useRef<HTMLDivElement>(null),
     inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
+    const phoneLayout = window.matchMedia('(max-width: 650px)');
     const sync = () => {
-      setEntered(location.hash === '#search');
+      const phoneEplanLink = location.hash === '#eplan' && phoneLayout.matches;
+      setEntered(location.hash === '#search' || phoneEplanLink);
       setDatabaseOpen(location.hash === '#database');
-      setEplanOpen(location.hash === '#eplan');
+      setEplanOpen(location.hash === '#eplan' && !phoneLayout.matches);
     };
     window.addEventListener('hashchange', sync);
-    return () => window.removeEventListener('hashchange', sync);
+    phoneLayout.addEventListener('change', sync);
+    return () => {
+      window.removeEventListener('hashchange', sync);
+      phoneLayout.removeEventListener('change', sync);
+    };
   }, []);
   // Restored iPhone sessions must not summon the keyboard without user intent.
   useEffect(() => {
