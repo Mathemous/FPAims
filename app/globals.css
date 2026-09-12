@@ -1669,12 +1669,12 @@ body {
 .eplan-count { margin: 18px 0 10px; color: #586d82; font-size: 14px; }
 .eplan-detail-list { display: grid; gap: 12px; padding-bottom: 18px; }
 .eplan-detail { overflow: hidden; border: 1px solid #b9ccdc; background: white; }
-.eplan-detail-head { display: grid; grid-template-columns: clamp(420px, 34%, 450px) minmax(0, 1fr); background: #075184; color: white; font-size: 14px; text-align: center; }
+.eplan-detail-head { display: grid; grid-template-columns: clamp(450px, 36%, 480px) minmax(0, 1fr); background: #075184; color: white; font-size: 14px; text-align: center; }
 .eplan-detail-head strong { padding: 6px 12px; }
 .eplan-detail-head strong + strong { border-left: 1px solid rgba(255,255,255,.6); }
-.eplan-detail-body { display: grid; grid-template-columns: clamp(420px, 34%, 450px) minmax(0, 1fr); }
+.eplan-detail-body { display: grid; grid-template-columns: clamp(450px, 36%, 480px) minmax(0, 1fr); }
 .eplan-budget-fields { display: grid; align-content: start; gap: 14px; margin: 0; padding: 18px 20px; background: #eef5fa; font-size: 14px; }
-.eplan-budget-fields div { display: grid; grid-template-columns: 145px minmax(0,1fr); gap: 10px; }
+.eplan-budget-fields div { display: grid; grid-template-columns: 175px minmax(0,1fr); gap: 10px; }
 .eplan-budget-fields div:has(.eplan-money) { align-items: center; }
 .eplan-budget-fields dt { font-weight: 700; text-align: right; }
 .eplan-budget-fields dd { margin: 0; overflow-wrap: anywhere; }
