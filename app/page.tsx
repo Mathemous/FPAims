@@ -48,6 +48,8 @@ const narrativesById = new Map(eplanSource.rows.map(row => [row.sourceId, row]))
 function MatchCard({ item, count }: { item: Item; count: number; query: string }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = React.useId();
+  const detailsId = React.useId();
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const linked = detailsById[item.id] || [];
   const sources = linked.flatMap(link => {
     const row = narrativesById.get(link.sourceId);
@@ -68,9 +70,11 @@ function MatchCard({ item, count }: { item: Item; count: number; query: string }
         <h3>{item.item}</h3>
         {schools.length > 0 && <p className="match-schools">{schools.slice(0, 2).join(' · ')}{schools.length > 2 ? ' + ' + (schools.length - 2) + ' more' : ''}</p>}
         <p className="account">{item.account} · {item.category}</p>
-        <details>
-          <summary>Source details <ChevronDown size={16} /></summary>
-          <div className="details-content">
+        <div className="match-actions">
+          <button type="button" className="source-details-toggle" aria-expanded={detailsOpen} aria-controls={detailsId} onClick={() => setDetailsOpen(!detailsOpen)}>Source details <ChevronDown size={16} /></button>
+          {sources.length > 0 && <button type="button" className="read-narrative" onClick={() => dialogRef.current?.showModal()}>Read full narrative</button>}
+        </div>
+          <div id={detailsId} className="details-content" hidden={!detailsOpen}>
             <p><strong>Line item:</strong> {item.line}</p>
             {associations.map((a, i) => <div className="school-source" key={i}>
               <p><strong>{a.school}</strong>{a.category ? ' · ' + a.category : ''}</p>
@@ -78,9 +82,7 @@ function MatchCard({ item, count }: { item: Item; count: number; query: string }
             </div>)}
             <p>{count} database {count === 1 ? 'entry' : 'entries'} · FY {source.year} · Revision {source.revision}</p>
           </div>
-        </details>
         {sources.length > 0 && <>
-          <button type="button" className="read-narrative" onClick={() => dialogRef.current?.showModal()}>Read full narrative</button>
           <dialog className="narrative-dialog" ref={dialogRef} aria-labelledby={titleId}>
             <div className="narrative-dialog-header">
               <div><span className="eyebrow">{shortPrograms[item.program]} · Full narrative</span><h2 id={titleId}>{item.item}</h2></div>
