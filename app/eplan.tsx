@@ -3,6 +3,7 @@ import { ArrowLeft, ExternalLink, Search } from 'lucide-react';
 import source from '@/data/eplan-source.json';
 
 const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+const displayProgramName = (id: string, name: string) => id === 'title-2-a' ? 'Title II' : name;
 
 type EplanProps = {
   program: string;
@@ -50,7 +51,7 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
           <span className="program-label">Programs</span>
           <div className="program-buttons" role="group" aria-label="ePlan programs">
             {source.programs.map((p, index) => <button key={p.id} type="button" className={`program-touch${index === 0 ? ' program-touch-centered' : ''}${program === p.id ? ' is-selected' : ''}`} aria-pressed={program === p.id} onClick={() => onProgramChange(p.id)}>
-              {p.name}<span className="program-entry-count">{resultCounts[p.id]} {resultCounts[p.id] === 1 ? 'result' : 'results'}</span>
+              {displayProgramName(p.id, p.name)}<span className="program-entry-count">{resultCounts[p.id]} {resultCounts[p.id] === 1 ? 'result' : 'results'}</span>
             </button>)}
           </div>
         </div>
@@ -61,7 +62,7 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
       </aside>
       <section className="eplan-results" aria-label="ePlan budget details">
       <div className="eplan-results-toolbar">
-        <p className="eplan-count" aria-live="polite">{rows.length} budget detail rows for {selectedProgram.name}{query.trim() ? ' matching your search' : ''}</p>
+        <p className="eplan-count" aria-live="polite">{rows.length} budget detail rows for {displayProgramName(selectedProgram.id, selectedProgram.name)}{query.trim() ? ' matching your search' : ''}</p>
         {expandableRows.length > 0 && <button type="button" onClick={() => setExpandedNarratives(current => {
           const next = new Set(current);
           expandableRows.forEach(row => allExpanded ? next.delete(row.sourceId) : next.add(row.sourceId));
