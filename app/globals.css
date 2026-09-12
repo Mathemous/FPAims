@@ -1810,7 +1810,17 @@ body {
 .eplan-sidebar .eplan-links { display: grid; justify-items: center; gap: 10px; margin: 22px 0 0; }
 .eplan-results { min-width: 0; }
 .eplan-results .eplan-count { margin-top: 0; }
+@media (min-width: 801px) {
+  .app.database-view.eplan-view { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+  .app.database-view.eplan-view .app-header { position: static; flex: 0 0 auto; }
+  .app.database-view .eplan-workspace { flex: 1; min-height: 0; overflow: hidden; }
+  .eplan-sidebar { position: static; max-height: 100%; }
+  .eplan-results { height: 100%; overflow-y: auto; overscroll-behavior-y: contain; padding-right: 4px; }
+}
 @media (max-width: 800px) {
-  .app.database-view .eplan-workspace { display: block; }
+  .app.database-view.eplan-view { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+  .app.database-view.eplan-view .app-header { position: static; flex: 0 0 auto; }
+  .app.database-view .eplan-workspace { display: block; flex: 1; min-height: 0; overflow-y: auto; }
   .eplan-sidebar { position: static; max-height: none; overflow: visible; margin-bottom: 18px; }
+  .eplan-results { overflow: visible; }
 }
