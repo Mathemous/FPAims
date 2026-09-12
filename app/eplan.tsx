@@ -19,7 +19,7 @@ export default function Eplan() {
     </div></header>
     <main className="workspace">
       <div className="eplan-heading">
-        <div className="page-title"><h1>ePlan<span>.</span></h1>
+        <div className="page-title"><h1>Knox County ePlan Budget<span>.</span></h1>
           <p>{source.district} ({source.districtCode}) · FY {source.year} · {source.application} ({source.applicationDate}) · Revision {source.revision}</p>
         </div>
         <div className="eplan-source-stamp"><span>Selected application</span><strong>{source.application} {source.applicationDate}</strong><small>{source.status}</small></div>
