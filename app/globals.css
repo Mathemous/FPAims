@@ -757,7 +757,7 @@ h3 {
   }
 }
 @media (max-width: 650px) {
-  a[href="#eplan"] { display: none !important; }
+  a[href="#eplan"]:not(.eplan-entry-button) { display: none !important; }
   .welcome {
     padding: 27px 20px 20px;
     align-items: flex-start;

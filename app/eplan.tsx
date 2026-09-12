@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowLeft, ExternalLink, Search } from 'lucide-react';
+import { ExternalLink, Search } from 'lucide-react';
 import source from '@/data/eplan-source.json';
 import { matchesEplanQuery } from '@/lib/eplan-search';
 
@@ -43,7 +43,6 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
   return <div className="app database-view eplan-view">
     <header className="app-header"><div className="header-inner">
       <a href="#" className="brand compact" aria-label="FP AIMS home"><span>FP <strong>AIMS</strong></span></a>
-      <a href="#search" className="database-back"><ArrowLeft size={17} /> Item search</a>
     </div></header>
     <main className="workspace eplan-workspace">
       <aside className="eplan-sidebar search-panel">

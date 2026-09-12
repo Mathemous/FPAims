@@ -83,9 +83,9 @@ function MatchCard({
   );
 }
 export default function Home() {
-  const [entered, setEntered] = useState(() => location.hash === '#search' || (location.hash === '#eplan' && usesPhoneLayout()));
+  const [entered, setEntered] = useState(() => usesPhoneLayout() && (location.hash === '#search' || location.hash === '#eplan'));
   const [databaseOpen, setDatabaseOpen] = useState(() => location.hash === '#database');
-  const [eplanOpen, setEplanOpen] = useState(() => location.hash === '#eplan' && !usesPhoneLayout());
+  const [eplanOpen, setEplanOpen] = useState(() => !usesPhoneLayout() && (location.hash === '#eplan' || location.hash === '#search'));
   const [program, setProgram] = useState('title-1-a');
   const [word, setWord] = useState('');
   const [query, setQuery] = useState<string | null>(null);
@@ -99,10 +99,10 @@ export default function Home() {
   useEffect(() => {
     const phoneLayout = window.matchMedia('(max-width: 650px)');
     const sync = () => {
-      const phoneEplanLink = location.hash === '#eplan' && phoneLayout.matches;
-      setEntered(location.hash === '#search' || phoneEplanLink);
+      const searchRoute = location.hash === '#search' || location.hash === '#eplan';
+      setEntered(phoneLayout.matches && searchRoute);
       setDatabaseOpen(location.hash === '#database');
-      setEplanOpen(location.hash === '#eplan' && !phoneLayout.matches);
+      setEplanOpen(!phoneLayout.matches && searchRoute);
     };
     window.addEventListener('hashchange', sync);
     phoneLayout.addEventListener('change', sync);
@@ -307,11 +307,10 @@ export default function Home() {
               <br className="desktop-break" /> across five Federal Programs.
             </p>
             <a
-              className="primary-button"
-              href="#search"
+              className="primary-button eplan-entry-button"
+              href="#eplan"
               onClick={() => {
                 setQuery(null);
-                setEntered(true);
               }}
             >
               Enter FP AIMS <ArrowRight size={22} />
