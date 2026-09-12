@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Search } from 'lucide-react';
 import source from '@/data/eplan-source.json';
 
 const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
@@ -18,19 +18,25 @@ export default function Eplan() {
       <a href="#" className="brand compact" aria-label="FP AIMS home"><span>FP <strong>AIMS</strong></span></a>
       <a href="#search" className="database-back"><ArrowLeft size={17} /> Item search</a>
     </div></header>
-    <main className="workspace">
-      <div className="eplan-heading">
+    <main className="workspace eplan-workspace">
+      <aside className="eplan-sidebar search-panel">
         <div className="page-title"><h1>Knox County ePlan Budget<span>.</span></h1>
           <p>{source.district} ({source.districtCode}) · FY {source.year} · {source.application} ({source.applicationDate}) · Revision {source.revision}</p>
         </div>
-      </div>
-      <div className="database-filters">
-        <label>Program<select value={program} onChange={e => { setProgram(e.target.value); setQuery(''); }}>
-          {source.programs.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
-        </select></label>
-        <label>Find in this program<input type="search" value={query} maxLength={150} onChange={e => setQuery(e.target.value)} placeholder="Narrative, school, account, or line item" /></label>
+        <div className="program-field">
+          <span className="program-label">Programs</span>
+          <div className="program-buttons" role="group" aria-label="ePlan programs">
+            {source.programs.map((p, index) => <button key={p.id} type="button" className={`program-touch${index === 0 ? ' program-touch-centered' : ''}${program === p.id ? ' is-selected' : ''}`} aria-pressed={program === p.id} onClick={() => { setProgram(p.id); setQuery(''); }}>
+              {p.name}<span className="program-entry-count">{source.rows.filter(row => row.program === p.id).length} entries</span>
+            </button>)}
+          </div>
+        </div>
+        <label className="eplan-search-field">Find in this program
+          <span className="input-wrap"><Search size={21} /><input type="search" value={query} maxLength={150} onChange={e => setQuery(e.target.value)} placeholder="Narrative, school, account…" /></span>
+        </label>
         <nav className="eplan-links" aria-label="Budget navigation"><a href="#database">Individual item database</a><a href="https://eplan.tn.gov/Search/DistrictSearch.aspx" target="_blank" rel="noopener noreferrer">Open ePlan <ExternalLink size={14} /></a></nav>
-      </div>
+      </aside>
+      <section className="eplan-results" aria-label="ePlan budget details">
       <p className="eplan-count" aria-live="polite">{rows.length} budget detail rows for {selectedProgram.name}{query.trim() ? ' matching your search' : ''}</p>
       <div className="eplan-detail-list">
         {rows.map(row => {
@@ -64,6 +70,7 @@ export default function Eplan() {
         {!rows.length && <p className="eplan-empty">No budget rows match. Try another phrase or program.</p>}
       </div>
       <p className="eplan-source-note">Saved public ePlan export checked {new Date(source.checkedAt).toLocaleString()}. The application date above identifies the selected approved Consolidated application.</p>
+      </section>
     </main>
   </div>;
 }
