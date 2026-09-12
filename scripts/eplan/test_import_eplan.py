@@ -35,6 +35,7 @@ class ImportTests(unittest.TestCase):
         self.assertIn(other, result)
         self.assertNotIn(self.records[0], result)
         self.assertEqual(result[-1]['narrative'], updated_row['narrative'])
+        self.assertNotIn('recipient', result[-1])
         self.assertEqual(report['removedEntries'], 1)
 
     def test_deletions_remove_old_entries_and_new_groups_are_added(self):

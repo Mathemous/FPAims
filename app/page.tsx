@@ -36,12 +36,10 @@ function Brand({ compact = false }: { compact?: boolean }) {
 }
 function MatchCard({
   item,
-  recipients,
   count,
   query,
 }: {
   item: Item;
-  recipients: string[];
   count: number;
   query: string;
 }) {
@@ -65,16 +63,14 @@ function MatchCard({
             {item.narrative && <>
               <p><strong>Original ePlan narrative</strong> · Source {item.sourceId}</p>
               <p className="source-narrative">{item.narrative}</p>
-              <p>School and set-aside restrictions are described in the original narrative above.</p>
+              <p>Use the original narrative above for any named location, institution, or set-aside.</p>
             </>}
             <p>
               <strong>Line item:</strong> {item.line}
             </p>
+            <p><a href="#eplan">Review full ePlan budget detail</a></p>
             <p>
-              <strong>Recipient / set-aside:</strong> {recipients.join('; ')}
-            </p>
-            <p>
-              {count} source {count === 1 ? 'entry' : 'entries'} · FY {source.year} ·
+              {count} database {count === 1 ? 'entry' : 'entries'} · FY {source.year} ·
               Revision {source.revision}
             </p>
           </div>
@@ -412,13 +408,11 @@ export default function Home() {
                       (g: {
                         key: string;
                         item: Item;
-                        recipients: string[];
                         count: number;
                       }) => (
                         <MatchCard
                           key={g.key}
                           item={g.item}
-                          recipients={g.recipients}
                           count={g.count}
                           query={query}
                         />

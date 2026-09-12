@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { searchRecords, groupMatches, narrativeExcerpt } from '../lib/search.mjs';
 
-const a = { id:'a',sourceId:'123',program:'title-4',account:'71100',line:'429',category:'Instruction',subcategory:'Supplies',item:'Supplies',recipient:'Knox County Schools',narrative:'School A: paper.\n\nGrace Christian Academy: CPR training and books.' };
+const a = { id:'a',sourceId:'123',program:'title-4',account:'71100',line:'429',category:'Instruction',subcategory:'Supplies',item:'Supplies',narrative:'School A: paper.\n\nGrace Christian Academy: CPR training and books.' };
 test('full imported narratives are searchable across schools and materials', () => {
   assert.equal(searchRecords([a], 'Grace CPR').length, 1);
   assert.equal(searchRecords([a], 'missing123').length, 0);

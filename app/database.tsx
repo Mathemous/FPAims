@@ -51,7 +51,7 @@ export default function Database() {
             </select>
           </label>
           <label>Search records
-            <input type="search" value={keyword} placeholder="Item, recipient, account, or category" maxLength={150} onChange={(e) => { setKeyword(e.target.value); setPage(0); }} />
+            <input type="search" value={keyword} placeholder="Item, account, category, or source narrative" maxLength={150} onChange={(e) => { setKeyword(e.target.value); setPage(0); }} />
           </label>
         </div>
         <div className="database-pagination">
@@ -65,10 +65,10 @@ export default function Database() {
         <div className="database-table-wrap" role="region" aria-label="Database records, scroll horizontally for all fields" tabIndex={0}>
           <table className="database-table">
             <caption className="sr-only">Stored FP AIMS database records</caption>
-            <thead><tr>{['Program', 'Item or service', 'Recipient / set-aside', 'Narrative subcategory', 'Account', 'Line item', 'Budget category', 'Record ID'].map((heading) => <th key={heading} scope="col">{heading}</th>)}</tr></thead>
+            <thead><tr>{['Program', 'Item or service', 'Narrative subcategory', 'Account', 'Line item', 'Budget category', 'Record ID'].map((heading) => <th key={heading} scope="col">{heading}</th>)}</tr></thead>
             <tbody>{displayed.map((record: (typeof records)[number]) => <tr key={record.id}>
-              <td>{programNames[record.program]}</td><td>{record.item}{record.narrative && <details><summary>Full ePlan narrative</summary><p className="source-narrative">{record.narrative}</p></details>}</td><td>{record.recipient}</td><td>{record.subcategory}</td><td>{record.account}</td><td>{record.line}</td><td>{record.category}</td><td>{record.id}</td>
-            </tr>)}{!displayed.length && <tr><td colSpan={8}>No matching entries. Try another keyword or program.</td></tr>}</tbody>
+              <td>{programNames[record.program]}</td><td>{record.item}{record.narrative && <details><summary>Full ePlan narrative</summary><p className="source-narrative">{record.narrative}</p></details>}</td><td>{record.subcategory}</td><td>{record.account}</td><td>{record.line}</td><td>{record.category}</td><td>{record.id}</td>
+            </tr>)}{!displayed.length && <tr><td colSpan={7}>No matching entries. Try another keyword or program.</td></tr>}</tbody>
           </table>
         </div>
       </main>

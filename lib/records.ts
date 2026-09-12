@@ -8,7 +8,6 @@ export type RecordEntry = {
   subcategory: string;
   item: string;
   line: string;
-  recipient: string;
   narrative?: string;
   sourceId?: string;
 };

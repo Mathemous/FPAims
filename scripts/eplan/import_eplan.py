@@ -105,7 +105,6 @@ def reconcile(records, previous, incoming):
             'id': f"eplan-{incoming['year']}-{row['program']}-{row['sourceId']}",
             'program': row['program'], 'account': row['account'], 'category': row['category'],
             'subcategory': row['subcategory'], 'item': row['subcategory'], 'line': row['line'],
-            'recipient': ' · '.join(v for v in [row['organization'], row['programCode'], row['tags']] if v),
             'narrative': row['narrative'], 'sourceId': row['sourceId'],
         })
     result.extend(replacements)
