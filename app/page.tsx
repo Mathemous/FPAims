@@ -155,7 +155,6 @@ export default function Home() {
     [query],
   );
   const programEntryCounts = useMemo(() => {
-    if (!word.trim()) return null;
     const entries = searchRecords(records, word);
     return Object.fromEntries(
       programs.map((p) => [p.id, entries.filter((r: Item) => r.program === p.id).length]),
@@ -210,7 +209,7 @@ export default function Home() {
               value={p.id}
               type="button"
               aria-label={p.name}
-              aria-describedby={programEntryCounts ? `entries-${p.id}` : undefined}
+              aria-describedby={`entries-${p.id}`}
               className={`program-touch ${index === 0 ? 'program-touch-centered' : ''} ${program === p.id ? 'is-selected' : ''}`}
             >
               {p.id === 'title-1-neglected' ? (
