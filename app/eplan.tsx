@@ -69,6 +69,7 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
           return next;
         })}>{allExpanded ? 'Collapse all' : 'Expand all'}</button>}
       </div>
+      <div className="eplan-results-scroll">
       <div className="eplan-detail-list">
         {rows.map(row => {
           const narrative = row.narrative || 'No narrative provided in the source export.';
@@ -101,6 +102,7 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
         {!rows.length && <p className="eplan-empty">No budget rows match. Try another phrase or program.</p>}
       </div>
       <p className="eplan-source-note">Saved public ePlan export checked {new Date(source.checkedAt).toLocaleString()}. The application date above identifies the selected approved Consolidated application.</p>
+      </div>
       </section>
     </main>
   </div>;
