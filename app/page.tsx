@@ -234,7 +234,7 @@ export default function Home() {
           {records.filter((r) => r.program === program).length} entries in this
           program
         </p>
-        <a href="#database" className="database-link">View database</a><a href="#eplan" className="database-link">ePlan budgets</a>
+        <a href="#eplan" className="database-link">ePlan budgets</a>
       </div>
       <div className="search-field">
         <label htmlFor="search">Item or service</label>
@@ -319,7 +319,7 @@ export default function Home() {
               Select a program. Search. Discover.
             </span>
           </section>
-          <p className="welcome-footer">Materials. Services. Confidence.<a href="#database" className="database-link">View database</a><a href="#eplan" className="database-link">ePlan budgets</a></p>
+          <p className="welcome-footer">Materials. Services. Confidence.<a href="#eplan" className="database-link">ePlan budgets</a></p>
         </div>
       </main>
     );
