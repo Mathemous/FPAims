@@ -375,26 +375,30 @@ export default function Home() {
                 >
                   <ArrowLeft size={24} /> Back to search
                 </button>
-                <div className="results-heading">
-                  <h2>{query ? <>Results for “{query}”</> : current.name}</h2>
-                </div>
+                {!noResults && (
+                  <div className="results-heading">
+                    <h2>{query ? <>Results for “{query}”</> : current.name}</h2>
+                  </div>
+                )}
                 <div
                   className={`result-status ${own.length ? 'found' : 'not-found'}`}
                 >
                   {own.length ? <Check size={21} /> : <Minus size={21} />}
                   <div>
                     <h3>
-                      {own.length
+                      {noResults
+                        ? `No results found for “${query}” in any program.`
+                        : own.length
                         ? `${groups.length} ${groups.length === 1 ? 'match' : 'matches'} in ${current.name}`
                         : `Not found in ${current.name}`}
                     </h3>
-                    <p>
-                      {own.length
-                        ? 'Listed in the program’s budget narratives.'
-                        : noResults
-                          ? 'No matches across all five programs.'
+                    {!noResults && (
+                      <p>
+                        {own.length
+                          ? 'Listed in the program’s budget narratives.'
                           : 'No matching entry in this program’s current list.'}
-                    </p>
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="match-list">
