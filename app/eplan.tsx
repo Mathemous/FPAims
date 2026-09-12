@@ -7,6 +7,7 @@ const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'U
 export default function Eplan() {
   const [program, setProgram] = useState(source.programs[0].id);
   const [query, setQuery] = useState('');
+  const [expandedNarratives, setExpandedNarratives] = useState<Set<string>>(new Set());
   const selectedProgram = source.programs.find(item => item.id === program)!;
   const rows = useMemo(() => source.rows.filter(row => row.program === program &&
     [row.account, row.category, row.line, row.subcategory, row.narrative, row.organization, row.organizationCode, row.programCode, row.tags]
@@ -32,8 +33,12 @@ export default function Eplan() {
       </div>
       <p className="eplan-count" aria-live="polite">{rows.length} budget detail rows for {selectedProgram.name}{query.trim() ? ' matching your search' : ''}</p>
       <div className="eplan-detail-list">
-        {rows.map(row => <article className="eplan-detail" key={row.sourceId}>
-          <div className="eplan-detail-head"><strong>Budget Detail</strong></div>
+        {rows.map(row => {
+          const narrative = row.narrative || 'No narrative provided in the source export.';
+          const isLong = narrative.length > 650 || narrative.split('\n').length > 12;
+          const isExpanded = expandedNarratives.has(row.sourceId);
+          return <article className="eplan-detail" key={row.sourceId}>
+          <div className="eplan-detail-head"><strong>Budget Detail</strong><strong>Narrative Description</strong></div>
           <div className="eplan-detail-body">
             <dl className="eplan-budget-fields">
               <div><dt>Account Number:</dt><dd>{row.account} - {row.category}</dd></div>
@@ -46,12 +51,16 @@ export default function Eplan() {
               <div><dt>Source Row:</dt><dd>{row.sourceId}</dd></div>
               <div><dt>Last Updated:</dt><dd>{row.updatedAt || 'Not specified'}</dd></div>
             </dl>
-            <details className="eplan-narrative">
-              <summary>Narrative Description</summary>
-              <p className="source-narrative">{row.narrative || 'No narrative provided in the source export.'}</p>
-            </details>
+            <div className="eplan-narrative">
+              <p className={`source-narrative${isLong && !isExpanded ? ' is-collapsed' : ''}`}>{narrative}</p>
+              {isLong && <button type="button" className="eplan-narrative-toggle" aria-expanded={isExpanded} onClick={() => setExpandedNarratives(current => {
+                const next = new Set(current);
+                if (isExpanded) next.delete(row.sourceId); else next.add(row.sourceId);
+                return next;
+              })}>{isExpanded ? 'Show less' : 'Show full narrative'}</button>}
+            </div>
           </div>
-        </article>)}
+        </article>})}
         {!rows.length && <p className="eplan-empty">No budget rows match. Try another phrase or program.</p>}
       </div>
       <p className="eplan-source-note">Saved public ePlan export checked {new Date(source.checkedAt).toLocaleString()}. The application date above identifies the selected approved Consolidated application.</p>
