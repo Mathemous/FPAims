@@ -3,7 +3,11 @@ import { ArrowLeft, ExternalLink, Search } from 'lucide-react';
 import source from '@/data/eplan-source.json';
 
 const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-const displayProgramName = (id: string, name: string) => id === 'title-2-a' ? 'Title II' : name;
+const displayProgramName = (id: string, name: string) => {
+  if (id === 'title-2-a') return 'Title II';
+  if (id === 'title-1-d') return 'Title I, Part D';
+  return name;
+};
 
 type EplanProps = {
   program: string;
