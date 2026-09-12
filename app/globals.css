@@ -1836,3 +1836,5 @@ body {
   .eplan-results { overflow: visible; }
   .eplan-results-toolbar { position: sticky; top: 0; z-index: 5; padding-top: 8px; }
 }
+.welcome .brand > span { font-size: clamp(36px, 5vw, 62px); }
+.welcome .brand-name-line { display: inline-block; white-space: nowrap; }

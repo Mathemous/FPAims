@@ -30,7 +30,7 @@ function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <div className={compact ? 'brand compact' : 'brand'}>
       <span>
-        {compact ? <>Federal Programs <strong>ePlan Search</strong></> : <>Federal Programs<br /><strong>ePlan Search</strong></>}
+        {compact ? <>Federal Programs <strong>ePlan Search</strong></> : <><span className="brand-name-line">Federal Programs</span><br /><strong>ePlan Search</strong></>}
       </span>
       <i />
       <p>Approved Items, Materials &amp; Services</p>
