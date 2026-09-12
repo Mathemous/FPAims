@@ -319,7 +319,6 @@ export default function Home() {
               Select a program. Search. Discover.
             </span>
           </section>
-          <p className="welcome-footer">Materials. Services. Confidence.</p>
         </div>
       </main>
     );
