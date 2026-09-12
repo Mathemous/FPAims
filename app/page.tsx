@@ -315,9 +315,6 @@ export default function Home() {
             >
               Enter Federal Programs ePlan Search <ArrowRight size={22} />
             </a>
-            <span className="welcome-steps">
-              Select a program. Search. Discover.
-            </span>
           </section>
         </div>
       </main>
