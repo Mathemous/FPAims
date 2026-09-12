@@ -1673,14 +1673,14 @@ body {
 .eplan-detail-head strong { padding: 6px 12px; }
 .eplan-detail-head strong + strong { border-left: 1px solid rgba(255,255,255,.6); }
 .eplan-detail-body { display: grid; grid-template-columns: clamp(450px, 36%, 480px) minmax(0, 1fr); }
-.eplan-budget-fields { display: grid; align-content: start; gap: 14px; margin: 0; padding: 18px 20px; background: #eef5fa; font-size: 14px; }
+.eplan-budget-fields { display: grid; align-content: start; gap: 12px; margin: 0; padding: 18px 20px; background: #eef5fa; font-size: 13px; }
 .eplan-budget-fields div { display: grid; grid-template-columns: 175px minmax(0,1fr); gap: 10px; }
 .eplan-budget-fields div:has(.eplan-money) { align-items: center; }
 .eplan-budget-fields dt { font-weight: 700; text-align: right; }
 .eplan-budget-fields dd { margin: 0; overflow-wrap: anywhere; }
 .eplan-money { box-sizing: border-box; width: 132px; padding: 4px 8px; border: 1px solid #bac4cc; background: #fff; font-variant-numeric: tabular-nums; text-align: left; white-space: nowrap; }
 .eplan-narrative { display: flex; min-width: 0; padding: 18px 20px; border-left: 1px solid #b9ccdc; flex-direction: column; }
-.eplan-narrative .source-narrative { margin: 0; white-space: pre-wrap; }
+.eplan-narrative .source-narrative { margin: 0; white-space: pre-wrap; font-size: 13px; line-height: 1.5; }
 .eplan-narrative .source-narrative.is-collapsed { position: relative; max-height: 330px; overflow: hidden; }
 .eplan-narrative .source-narrative.is-collapsed::after { content: ""; position: absolute; right: 0; bottom: 0; left: 0; height: 54px; background: linear-gradient(transparent, #fff); pointer-events: none; }
 .eplan-narrative-toggle { display: block; margin: auto 0 0 auto; padding: 12px 0 0; border: 0; background: transparent; color: #1767a8; cursor: pointer; font: inherit; font-size: 14px; font-weight: 700; text-align: right; text-decoration: underline; text-underline-offset: 3px; }
