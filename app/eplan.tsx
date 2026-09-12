@@ -33,7 +33,7 @@ export default function Eplan() {
       <p className="eplan-count" aria-live="polite">{rows.length} budget detail rows for {selectedProgram.name}{query.trim() ? ' matching your search' : ''}</p>
       <div className="eplan-detail-list">
         {rows.map(row => <article className="eplan-detail" key={row.sourceId}>
-          <div className="eplan-detail-head"><strong>Budget Detail</strong><strong>Narrative Description</strong></div>
+          <div className="eplan-detail-head"><strong>Budget Detail</strong></div>
           <div className="eplan-detail-body">
             <dl className="eplan-budget-fields">
               <div><dt>Account Number:</dt><dd>{row.account} - {row.category}</dd></div>
@@ -46,9 +46,10 @@ export default function Eplan() {
               <div><dt>Source Row:</dt><dd>{row.sourceId}</dd></div>
               <div><dt>Last Updated:</dt><dd>{row.updatedAt || 'Not specified'}</dd></div>
             </dl>
-            <div className="eplan-narrative">
+            <details className="eplan-narrative">
+              <summary>Narrative Description</summary>
               <p className="source-narrative">{row.narrative || 'No narrative provided in the source export.'}</p>
-            </div>
+            </details>
           </div>
         </article>)}
         {!rows.length && <p className="eplan-empty">No budget rows match. Try another phrase or program.</p>}

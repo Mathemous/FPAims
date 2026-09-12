@@ -1669,29 +1669,25 @@ body {
 .eplan-count { margin: 18px 0 10px; color: #586d82; font-size: 14px; }
 .eplan-detail-list { display: grid; gap: 12px; padding-bottom: 18px; }
 .eplan-detail { overflow: hidden; border: 1px solid #b9ccdc; background: white; }
-.eplan-detail-head { display: grid; grid-template-columns: minmax(320px, 40%) minmax(0, 60%); background: #075184; color: white; font-size: 14px; text-align: center; }
-.eplan-detail-head strong { padding: 6px 12px; }
-.eplan-detail-head strong + strong { border-left: 1px solid rgba(255,255,255,.6); }
-.eplan-detail-body { display: grid; grid-template-columns: minmax(320px, 40%) minmax(0, 60%); }
+.eplan-detail-head { background: #075184; color: white; font-size: 14px; text-align: left; }
+.eplan-detail-head strong { display: block; padding: 6px 12px; }
+.eplan-detail-body { display: block; }
 .eplan-budget-fields { display: grid; align-content: start; gap: 14px; margin: 0; padding: 18px 20px; background: #eef5fa; font-size: 14px; }
 .eplan-budget-fields div { display: grid; grid-template-columns: 150px minmax(0,1fr); gap: 10px; }
 .eplan-budget-fields dt { font-weight: 700; text-align: right; }
 .eplan-budget-fields dd { margin: 0; overflow-wrap: anywhere; }
 .eplan-money { width: fit-content; padding: 4px 8px; border: 1px solid #bac4cc; background: #fff; font-variant-numeric: tabular-nums; }
-.eplan-narrative { min-width: 0; padding: 18px 20px; border-left: 1px solid #b9ccdc; }
-.eplan-narrative .source-narrative { margin: 0; white-space: pre-wrap; }
+.eplan-narrative { min-width: 0; border-top: 1px solid #b9ccdc; }
+.eplan-narrative summary { padding: 12px 20px; color: #075184; cursor: pointer; font-size: 14px; font-weight: 700; }
+.eplan-narrative[open] summary { border-bottom: 1px solid #d7e2eb; background: #f7fafc; }
+.eplan-narrative .source-narrative { margin: 0; padding: 18px 20px; white-space: pre-wrap; }
 .eplan-source-note { margin: 0 0 24px; color: #586d82; font-size: 13px; }
 .eplan-empty { padding: 30px; border: 1px solid #dce5ee; background: white; }
 @media (max-width: 650px) {
   .eplan-heading { display: block; }
   .eplan-view .database-filters .eplan-links { justify-content: flex-start; margin: 4px 0 0; }
-  .eplan-detail-head { display: none; }
-  .eplan-detail-body { grid-template-columns: 1fr; }
-  .eplan-budget-fields::before { content: "Budget Detail"; display: block; margin: -18px -20px 2px; padding: 6px 20px; background: #075184; color: white; font-size: 14px; font-weight: 700; }
   .eplan-budget-fields div { grid-template-columns: 1fr; gap: 3px; }
   .eplan-budget-fields dt { text-align: left; }
-  .eplan-narrative { border-top: 1px solid #b9ccdc; border-left: 0; }
-  .eplan-narrative::before { content: "Narrative Description"; display: block; margin: -18px -20px 16px; padding: 6px 20px; background: #075184; color: white; font-size: 14px; font-weight: 700; }
 }
 .database-updater { margin: 22px 0; border: 1px solid #ccdaea; border-radius: 14px; background: #fff; overflow: hidden; }
 .database-updater > summary { padding: 17px 20px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; color: #123858; font-weight: 700; }
