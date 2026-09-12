@@ -1846,7 +1846,7 @@ body {
     white-space: nowrap;
   }
   .app-header .brand.compact > span > strong {
-    font-size: 18px;
+    font-size: 21px;
     letter-spacing: -0.3px;
   }
 }
