@@ -21,6 +21,11 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
   const resultCounts = useMemo(() => Object.fromEntries(source.programs.map(item =>
     [item.id, matchingRows.filter(row => row.program === item.id).length]
   )), [matchingRows]);
+  const expandableRows = rows.filter(row => {
+    const narrative = row.narrative || 'No narrative provided in the source export.';
+    return narrative.length > 650 || narrative.split('\n').length > 12;
+  });
+  const allExpanded = expandableRows.length > 0 && expandableRows.every(row => expandedNarratives.has(row.sourceId));
   const highlight = (value: string | number) => {
     const text = String(value);
     const term = query.trim();
@@ -55,7 +60,14 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
         <nav className="eplan-links" aria-label="Budget navigation"><a href="https://eplan.tn.gov/Search/DistrictSearch.aspx" target="_blank" rel="noopener noreferrer">Open ePlan <ExternalLink size={14} /></a></nav>
       </aside>
       <section className="eplan-results" aria-label="ePlan budget details">
-      <p className="eplan-count" aria-live="polite">{rows.length} budget detail rows for {selectedProgram.name}{query.trim() ? ' matching your search' : ''}</p>
+      <div className="eplan-results-toolbar">
+        <p className="eplan-count" aria-live="polite">{rows.length} budget detail rows for {selectedProgram.name}{query.trim() ? ' matching your search' : ''}</p>
+        {expandableRows.length > 0 && <button type="button" onClick={() => setExpandedNarratives(current => {
+          const next = new Set(current);
+          expandableRows.forEach(row => allExpanded ? next.delete(row.sourceId) : next.add(row.sourceId));
+          return next;
+        })}>{allExpanded ? 'Collapse all' : 'Expand all'}</button>}
+      </div>
       <div className="eplan-detail-list">
         {rows.map(row => {
           const narrative = row.narrative || 'No narrative provided in the source export.';

@@ -1814,6 +1814,9 @@ body {
 .eplan-sidebar .eplan-links { display: grid; justify-items: center; gap: 10px; margin: 22px 0 0; }
 .eplan-results { min-width: 0; }
 .eplan-results .eplan-count { margin-top: 0; }
+.eplan-results-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 10px; }
+.eplan-results-toolbar .eplan-count { margin: 0; }
+.eplan-results-toolbar button { flex: 0 0 auto; padding: 0; border: 0; background: transparent; color: #1767a8; cursor: pointer; font: inherit; font-size: 14px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 @media (min-width: 801px) {
   .app.database-view.eplan-view { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
   .app.database-view.eplan-view .app-header { position: static; flex: 0 0 auto; }
