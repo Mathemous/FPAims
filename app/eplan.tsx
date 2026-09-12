@@ -22,7 +22,6 @@ export default function Eplan() {
         <div className="page-title"><h1>Knox County ePlan Budget<span>.</span></h1>
           <p>{source.district} ({source.districtCode}) · FY {source.year} · {source.application} ({source.applicationDate}) · Revision {source.revision}</p>
         </div>
-        <div className="eplan-source-stamp"><span>Selected application</span><strong>{source.application} {source.applicationDate}</strong><small>{source.status}</small></div>
       </div>
       <div className="database-filters">
         <label>Program<select value={program} onChange={e => { setProgram(e.target.value); setQuery(''); }}>
