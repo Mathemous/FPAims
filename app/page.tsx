@@ -17,8 +17,9 @@ import {
   X,
 } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { programs, searchRecords, groupMatches } from '@/lib/search.mjs';
-import records from '@/data/records.json';
+import { programs, searchRecords, groupMatches, narrativeExcerpt } from '@/lib/search.mjs';
+import records from '@/lib/records';
+import source from '@/data/eplan-meta.json';
 import Database from './database';
 type Item = (typeof records)[number];
 function Brand({ compact = false }: { compact?: boolean }) {
@@ -36,10 +37,12 @@ function MatchCard({
   item,
   recipients,
   count,
+  query,
 }: {
   item: Item;
   recipients: string[];
   count: number;
+  query: string;
 }) {
   return (
     <article className="match-card">
@@ -49,6 +52,7 @@ function MatchCard({
       <div className="match-content">
         <span className="eyebrow">{item.subcategory}</span>
         <h3>{item.item}</h3>
+        {item.narrative && <p className="narrative-excerpt">{narrativeExcerpt(item.narrative, query)}</p>}
         <p className="account">
           {item.account} · {item.category}
         </p>
@@ -57,6 +61,11 @@ function MatchCard({
             Source details <ChevronDown size={16} />
           </summary>
           <div className="details-content">
+            {item.narrative && <>
+              <p><strong>Original ePlan narrative</strong> · Source {item.sourceId}</p>
+              <p className="source-narrative">{item.narrative}</p>
+              <p>School and set-aside restrictions are described in the original narrative above.</p>
+            </>}
             <p>
               <strong>Line item:</strong> {item.line}
             </p>
@@ -64,8 +73,8 @@ function MatchCard({
               <strong>Recipient / set-aside:</strong> {recipients.join('; ')}
             </p>
             <p>
-              {count} source {count === 1 ? 'entry' : 'entries'} · FY 2027 ·
-              Revision 1
+              {count} source {count === 1 ? 'entry' : 'entries'} · FY {source.year} ·
+              Revision {source.revision}
             </p>
           </div>
         </details>
@@ -327,7 +336,7 @@ export default function Home() {
             <Brand compact />
           </a>
           <span className="edition">
-            PUBLIC RESOURCE DIRECTORY<span>FY 2027 · Revision 1</span>
+            PUBLIC RESOURCE DIRECTORY<span>FY {source.year} · Revision {source.revision}</span>
           </span>
         </div>
       </header>
@@ -407,6 +416,7 @@ export default function Home() {
                           item={g.item}
                           recipients={g.recipients}
                           count={g.count}
+                          query={query}
                         />
                       ),
                     )}

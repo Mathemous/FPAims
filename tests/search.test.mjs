@@ -5,13 +5,16 @@ import { programs, searchRecords, groupMatches } from '../lib/search.mjs';
 const records = JSON.parse(
   fs.readFileSync(new URL('../data/records.json', import.meta.url), 'utf8'),
 );
-test('all five programs retain their complete imported record counts', () => {
-  assert.equal(records.length, 1009);
+const meta = JSON.parse(fs.readFileSync(new URL('../data/eplan-meta.json', import.meta.url), 'utf8'));
+
+test('all five programs match the validated published counts', () => {
+  assert.ok(records.length > 0);
   assert.deepEqual(
     programs.map((p) => records.filter((r) => r.program === p.id).length),
-    [463, 53, 18, 283, 192],
+    programs.map((p) => meta.recordCounts[p.id]),
   );
-  assert.equal(new Set(records.map((r) => r.id)).size, 1009);
+  assert.equal(new Set(records.map((r) => r.id)).size, records.length);
+  assert.ok(records.every((r) => programs.some((p) => p.id === r.program)));
   assert.ok(
     records.every((r) => r.item && r.account && r.category && r.recipient),
   );
@@ -27,8 +30,9 @@ test('case, punctuation and singular/plural variations find the same materials',
   );
   assert.ok(searchRecords(records, 'books').length > 0);
 });
-test('cross-program results follow real data, not the illustrated mockup', () => {
-  const hits = searchRecords(records, 'CPR training');
+test('cross-program results preserve recipient restrictions', () => {
+  const fixture = [{program:'title-4',item:'CPR training',recipient:'Grace Christian Academy (equitable services)'},{program:'title-1-a',item:'Paper',recipient:'District'}];
+  const hits = searchRecords(fixture, 'CPR training');
   assert.equal(hits.filter((r) => r.program === 'title-1-a').length, 0);
   assert.deepEqual([...new Set(hits.map((r) => r.program))], ['title-4']);
   assert.equal(
@@ -38,8 +42,8 @@ test('cross-program results follow real data, not the illustrated mockup', () =>
 });
 test('no-match and all-record browsing states', () => {
   assert.equal(searchRecords(records, 'qzxvnotpresent987').length, 0);
-  assert.equal(searchRecords(records, '').length, 1009);
-  assert.equal(searchRecords(records, '   ').length, 1009);
+  assert.equal(searchRecords(records, '').length, records.length);
+  assert.equal(searchRecords(records, '   ').length, records.length);
 });
 test('multiple words must match and grouping retains recipient restrictions', () => {
   const seed = records[0];

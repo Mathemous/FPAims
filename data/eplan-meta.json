@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "district": "Knox County Schools",
+  "districtCode": "470",
+  "year": 2027,
+  "revision": 1,
+  "status": "TDOE FPO Director Approved",
+  "checkedAt": "2026-09-12T00:54:49.330Z",
+  "source": "https://eplan.tn.gov/",
+  "programs": [
+    {
+      "id": "title-1-a",
+      "name": "Title I, Part A"
+    },
+    {
+      "id": "title-1-neglected",
+      "name": "Title I, Part A-Neglected"
+    },
+    {
+      "id": "title-1-d",
+      "name": "Title I, Part D LEA"
+    },
+    {
+      "id": "title-2-a",
+      "name": "Title II, Part A"
+    },
+    {
+      "id": "title-4",
+      "name": "Title IV"
+    }
+  ],
+  "fingerprint": "7e5afae820ff64ddd649635a40cebadbd1bd52f32f96b7526878fc790096ad60",
+  "sourceRows": 188,
+  "recordCounts": {
+    "title-1-a": 463,
+    "title-1-d": 18,
+    "title-1-neglected": 53,
+    "title-2-a": 283,
+    "title-4": 192
+  }
+}

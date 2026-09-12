@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { programs, searchRecords } from '@/lib/search.mjs';
-import records from '@/data/records.json';
+import records from '@/lib/records';
+import source from '@/data/eplan-meta.json';
+import DatabaseUpdater from './database-updater';
 
 const pageSize = 50;
 const programNames = Object.fromEntries(programs.map((p) => [p.id, p.name]));
@@ -31,9 +33,10 @@ export default function Database() {
       <main className="workspace">
         <div className="page-title">
           <h1>Database<span>.</span></h1>
-          <p>{records.length.toLocaleString()} stored entries across five programs. FY 2027 · Revision 1.</p>
+          <p>{records.length.toLocaleString()} stored entries across five programs. FY {source.year} · Revision {source.revision}.</p>
         </div>
-        <p className="database-source">Source: Knox County Schools ePlan budget narratives, transcribed from the original workbook. This view shows the app’s stored data, not a live ePlan feed. Repeated items remain separate when their source entries differ.</p>
+        <p className="database-source">Source: Knox County Schools ePlan budget narratives. This is the published database; use Update from ePlan to check for changes. Original workbook entries retain their item names; updated sections include the complete source narrative. School and set-aside details remain part of the source.</p>
+        <DatabaseUpdater />
         <div className="database-filters">
           <label>Program
             <select value={program} onChange={(e) => { setProgram(e.target.value); setPage(0); }}>
@@ -58,7 +61,7 @@ export default function Database() {
             <caption className="sr-only">Stored FP AIMS database records</caption>
             <thead><tr>{['Program', 'Item or service', 'Recipient / set-aside', 'Narrative subcategory', 'Account', 'Line item', 'Budget category', 'Record ID'].map((heading) => <th key={heading} scope="col">{heading}</th>)}</tr></thead>
             <tbody>{displayed.map((record: (typeof records)[number]) => <tr key={record.id}>
-              <td>{programNames[record.program]}</td><td>{record.item}</td><td>{record.recipient}</td><td>{record.subcategory}</td><td>{record.account}</td><td>{record.line}</td><td>{record.category}</td><td>{record.id}</td>
+              <td>{programNames[record.program]}</td><td>{record.item}{record.narrative && <details><summary>Full ePlan narrative</summary><p className="source-narrative">{record.narrative}</p></details>}</td><td>{record.recipient}</td><td>{record.subcategory}</td><td>{record.account}</td><td>{record.line}</td><td>{record.category}</td><td>{record.id}</td>
             </tr>)}{!displayed.length && <tr><td colSpan={8}>No matching entries. Try another keyword or program.</td></tr>}</tbody>
           </table>
         </div>
