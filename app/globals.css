@@ -1733,7 +1733,7 @@ body {
   display: block;
 }
 .app.database-view .app-header { position: static; }
-.database-view .header-inner { padding: 10px clamp(20px, 3vw, 48px); }
+.database-view .header-inner { box-sizing: border-box; width: 100%; max-width: none; margin: 0; padding: 10px clamp(20px, 3vw, 48px); }
 .database-view .brand.compact > span { font-size: 25px; }
 .database-view .brand.compact p { display: none; }
 .app.database-view .workspace {
