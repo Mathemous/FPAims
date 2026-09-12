@@ -1803,7 +1803,7 @@ body {
   border-radius: 16px;
 }
 .eplan-sidebar .page-title { margin-bottom: 22px; }
-.eplan-sidebar .page-title h1 { font-size: 25px; line-height: 1.12; }
+.eplan-sidebar .page-title h1 { font-size: 26px; line-height: 1.2; white-space: nowrap; margin-top: 6px; }
 .eplan-sidebar .page-title > p { line-height: 1.45; }
 .eplan-sidebar .program-label { font-size: 21px; margin-bottom: 14px; }
 .eplan-sidebar .program-buttons .program-touch { min-height: 58px; }
@@ -1838,3 +1838,5 @@ body {
 }
 .welcome .brand > span { font-size: clamp(36px, 5vw, 62px); }
 .welcome .brand-name-line { display: inline-block; white-space: nowrap; }
+
+.eplan-district-label { display: block; color: #59728c; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
