@@ -483,7 +483,7 @@ h3 {
   margin: 0 0 18px;
 }
 .results-heading h2 {
-  font-size: 25px;
+  font-size: 21px;
   line-height: 1.4;
   font-weight: 700;
   letter-spacing: -0.5px;
@@ -866,7 +866,7 @@ h3 {
     margin-top: 28px;
   }
   .results-heading h2 {
-    font-size: 23px;
+    font-size: 21px;
   }
   .search-tip {
     font-size: 12px;
@@ -1471,7 +1471,7 @@ body {
     height: 18px;
   }
   .results-heading h2 {
-    font-size: 28px;
+    font-size: 25px;
   }
   .match-list {
     align-items: start;

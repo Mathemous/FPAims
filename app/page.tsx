@@ -376,9 +376,6 @@ export default function Home() {
                   <ArrowLeft size={24} /> Back to search
                 </button>
                 <div className="results-heading">
-                  <span className="eyebrow">
-                    {query ? 'SEARCH RESULTS' : 'PROGRAM DIRECTORY'}
-                  </span>
                   <h2>{query ? <>Results for “{query}”</> : current.name}</h2>
                 </div>
                 <div
