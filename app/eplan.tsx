@@ -18,13 +18,9 @@ export default function Eplan() {
       <a href="#search" className="database-back"><ArrowLeft size={17} /> Item search</a>
     </div></header>
     <main className="workspace">
-      <nav className="eplan-path" aria-label="ePlan source path">
-        <span>ePlan</span><span>Funding</span><span>Sections</span><strong>Budget</strong>
-        <strong>{source.application} {source.applicationDate}</strong>
-      </nav>
       <div className="eplan-heading">
-        <div className="page-title"><h1>Budget detail<span>.</span></h1>
-          <p>{source.district} ({source.districtCode}) · FY {source.year} · {source.application} · Revision {source.revision}</p>
+        <div className="page-title"><h1>ePlan<span>.</span></h1>
+          <p>{source.district} ({source.districtCode}) · FY {source.year} · {source.application} ({source.applicationDate}) · Revision {source.revision}</p>
         </div>
         <div className="eplan-source-stamp"><span>Selected application</span><strong>{source.application} {source.applicationDate}</strong><small>{source.status}</small></div>
       </div>
