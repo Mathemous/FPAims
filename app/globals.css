@@ -1619,3 +1619,40 @@ body {
 .program-touch.is-selected .program-entry-count {
   color: #dce9f7;
 }
+/* Inspect the stored source records without changing the search experience. */
+.database-link {
+  display: block;
+  width: fit-content;
+  margin: 12px auto 0;
+  color: #2868a7;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 14px;
+}
+.welcome .database-link { color: #dce9f7; }
+.app.database-view { padding-top: 0; }
+.app.database-view .app-header { position: relative; }
+.database-back { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; white-space: nowrap; }
+.database-source { max-width: 900px; margin-top: 14px; color: #586d82; font-size: 14px; line-height: 1.6; }
+.database-filters { display: flex; flex-wrap: wrap; gap: 20px; margin: 26px 0 18px; }
+.database-filters label { display: flex; flex-direction: column; gap: 8px; font-size: 15px; font-weight: 600; flex: 1 1 260px; max-width: 520px; }
+.database-filters select, .database-filters input { width: 100%; min-width: 0; min-height: 46px; border: 1px solid #b7c8da; border-radius: 9px; background: white; padding: 10px 12px; font: inherit; font-size: 16px; font-weight: 400; }
+.database-pagination { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 16px 0; font-size: 14px; }
+.database-pagination > div { display: flex; align-items: center; gap: 12px; }
+.database-pagination button { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid #c7d8e8; border-radius: 8px; background: white; }
+.database-pagination button:disabled { opacity: .35; }
+.database-table-wrap { overflow: auto; max-height: 65dvh; border: 1px solid #dce5ee; border-radius: 12px; background: white; }
+.database-table { width: 100%; min-width: 1250px; border-collapse: separate; border-spacing: 0; font-size: 14px; line-height: 1.5; }
+.database-table th { position: sticky; top: 0; background: #10375f; color: white; text-align: left; font-weight: 600; z-index: 1; }
+.database-table th, .database-table td { padding: 12px 14px; vertical-align: top; border-bottom: 1px solid #e6edf4; }
+.database-table td { min-width: 100px; max-width: 280px; overflow-wrap: anywhere; }
+.database-table td:nth-child(2) { font-weight: 600; min-width: 230px; }
+.database-table tr:nth-child(even) td { background: #f5f8fb; }
+.database-table td:last-child { color: #61758b; font-size: 12px; }
+@media (max-width: 650px) {
+  .database-view .header-inner { padding: 13px 20px; }
+  .database-view .brand.compact p { display: none; }
+  .database-filters { gap: 14px; margin-top: 20px; }
+  .database-table-wrap { max-height: 55dvh; }
+  .search-view .program-field .database-link { margin-top: 8px; font-size: 13px; }
+}

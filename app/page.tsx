@@ -19,6 +19,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { programs, searchRecords, groupMatches } from '@/lib/search.mjs';
 import records from '@/data/records.json';
+import Database from './database';
 type Item = (typeof records)[number];
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
@@ -74,6 +75,7 @@ function MatchCard({
 }
 export default function Home() {
   const [entered, setEntered] = useState(() => location.hash === '#search');
+  const [databaseOpen, setDatabaseOpen] = useState(() => location.hash === '#database');
   const [program, setProgram] = useState('title-1-a');
   const [word, setWord] = useState('');
   const [query, setQuery] = useState<string | null>(null);
@@ -85,7 +87,10 @@ export default function Home() {
   const resultsRef = useRef<HTMLDivElement>(null),
     inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    const sync = () => setEntered(location.hash === '#search');
+    const sync = () => {
+      setEntered(location.hash === '#search');
+      setDatabaseOpen(location.hash === '#database');
+    };
     window.addEventListener('hashchange', sync);
     return () => window.removeEventListener('hashchange', sync);
   }, []);
@@ -221,6 +226,7 @@ export default function Home() {
           {records.filter((r) => r.program === program).length} entries in this
           program
         </p>
+        <a href="#database" className="database-link">View database</a>
       </div>
       <div className="search-field">
         <label htmlFor="search">Item or service</label>
@@ -263,6 +269,7 @@ export default function Home() {
       </button>
     </form>
   );
+  if (databaseOpen) return <Database />;
   if (!entered)
     return (
       <main className="welcome">
@@ -300,7 +307,7 @@ export default function Home() {
               Select a program. Search. Discover.
             </span>
           </section>
-          <p className="welcome-footer">Materials. Services. Confidence.</p>
+          <p className="welcome-footer">Materials. Services. Confidence.<a href="#database" className="database-link">View database</a></p>
         </div>
       </main>
     );
