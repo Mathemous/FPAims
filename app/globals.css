@@ -1678,7 +1678,7 @@ body {
 .eplan-budget-fields div:has(.eplan-money) { align-items: center; }
 .eplan-budget-fields dt { font-weight: 700; text-align: right; }
 .eplan-budget-fields dd { margin: 0; overflow-wrap: anywhere; }
-.eplan-money { box-sizing: border-box; width: 132px; padding: 4px 8px; border: 1px solid #bac4cc; background: #fff; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.eplan-money { box-sizing: border-box; width: 132px; padding: 4px 8px; border: 1px solid #bac4cc; background: #fff; font-variant-numeric: tabular-nums; text-align: left; white-space: nowrap; }
 .eplan-narrative { display: flex; min-width: 0; padding: 18px 20px; border-left: 1px solid #b9ccdc; flex-direction: column; }
 .eplan-narrative .source-narrative { margin: 0; white-space: pre-wrap; }
 .eplan-narrative .source-narrative.is-collapsed { position: relative; max-height: 330px; overflow: hidden; }
