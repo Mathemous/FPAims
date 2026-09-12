@@ -277,7 +277,10 @@ export default function Home() {
       </button>
     </form>
   );
-  if (eplanOpen) return <Eplan />;
+  if (eplanOpen) return <Eplan program={program} query={word} onProgramChange={setProgram} onQueryChange={(value) => {
+    setWord(value);
+    setQuery(value.trim() || null);
+  }} />;
   if (databaseOpen) return <Database />;
   if (!entered)
     return (

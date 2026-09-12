@@ -4,9 +4,14 @@ import source from '@/data/eplan-source.json';
 
 const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
-export default function Eplan() {
-  const [program, setProgram] = useState(source.programs[0].id);
-  const [query, setQuery] = useState('');
+type EplanProps = {
+  program: string;
+  query: string;
+  onProgramChange: (program: string) => void;
+  onQueryChange: (query: string) => void;
+};
+
+export default function Eplan({ program, query, onProgramChange, onQueryChange }: EplanProps) {
   const [expandedNarratives, setExpandedNarratives] = useState<Set<string>>(new Set());
   const selectedProgram = source.programs.find(item => item.id === program)!;
   const rows = useMemo(() => source.rows.filter(row => row.program === program &&
@@ -35,13 +40,13 @@ export default function Eplan() {
         <div className="program-field">
           <span className="program-label">Programs</span>
           <div className="program-buttons" role="group" aria-label="ePlan programs">
-            {source.programs.map((p, index) => <button key={p.id} type="button" className={`program-touch${index === 0 ? ' program-touch-centered' : ''}${program === p.id ? ' is-selected' : ''}`} aria-pressed={program === p.id} onClick={() => { setProgram(p.id); setQuery(''); }}>
+            {source.programs.map((p, index) => <button key={p.id} type="button" className={`program-touch${index === 0 ? ' program-touch-centered' : ''}${program === p.id ? ' is-selected' : ''}`} aria-pressed={program === p.id} onClick={() => onProgramChange(p.id)}>
               {p.name}<span className="program-entry-count">{source.rows.filter(row => row.program === p.id).length} entries</span>
             </button>)}
           </div>
         </div>
         <label className="eplan-search-field">Find in this program
-          <span className="input-wrap"><Search size={21} /><input type="search" value={query} maxLength={150} onChange={e => setQuery(e.target.value)} placeholder="Narrative, school, account…" /></span>
+          <span className="input-wrap"><Search size={21} /><input type="search" value={query} maxLength={150} onChange={e => onQueryChange(e.target.value)} placeholder="Narrative, school, account…" /></span>
         </label>
         <nav className="eplan-links" aria-label="Budget navigation"><a href="#database">Individual item database</a><a href="https://eplan.tn.gov/Search/DistrictSearch.aspx" target="_blank" rel="noopener noreferrer">Open ePlan <ExternalLink size={14} /></a></nav>
       </aside>
