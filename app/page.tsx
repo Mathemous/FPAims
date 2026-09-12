@@ -319,7 +319,7 @@ export default function Home() {
               Select a program. Search. Discover.
             </span>
           </section>
-          <p className="welcome-footer">Materials. Services. Confidence.<a href="#eplan" className="database-link">ePlan budgets</a></p>
+          <p className="welcome-footer">Materials. Services. Confidence.</p>
         </div>
       </main>
     );
