@@ -1850,3 +1850,18 @@ body {
     letter-spacing: -0.3px;
   }
 }
+/* Replace the intro without moving or remounting the search card. */
+.search-intro { position: relative; }
+.search-miss .search-intro > :not(.search-miss-message) { visibility: hidden; }
+.search-intro .search-miss-message {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 10px 14px;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.4;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+}

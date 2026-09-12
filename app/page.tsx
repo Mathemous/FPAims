@@ -185,7 +185,7 @@ export default function Home() {
     setVisible(30);
     setTimeout(
       () =>
-        resultsRef.current?.scrollIntoView({
+        !appRef.current?.classList.contains('search-view') && resultsRef.current?.scrollIntoView({
           behavior: 'smooth',
           block: 'start',
         }),
@@ -322,7 +322,7 @@ export default function Home() {
   return (
     <div
       ref={appRef}
-      className={`app ${query === null ? 'search-view' : 'results-view'} ${noResults ? 'no-results-view' : ''}`}
+      className={`app ${query === null || noResults ? 'search-view' : 'results-view'} ${noResults ? 'search-miss' : ''}`}
     >
       <header ref={headerRef} className="app-header">
         <div className="header-inner">
@@ -340,7 +340,7 @@ export default function Home() {
         </div>
       </header>
       <main className="workspace" ref={workspaceRef}>
-        <div className="page-title">
+        <div className="page-title search-intro">
           <a className="back-link" href="#" onClick={() => setEntered(false)}>
             <ArrowLeft size={16} /> Home
           </a>
@@ -348,9 +348,15 @@ export default function Home() {
             Find what you need<span>.</span>
           </h1>
           <p>Materials and services, organized by program.</p>
+          {noResults && (
+            <div className="search-miss-message result-status not-found" role="status">
+              <Minus size={21} />
+              <div>No results found for “{query}” in any program.</div>
+            </div>
+          )}
         </div>
         <div className="workspace-grid">
-          {!noResults && <aside className="search-panel">{searchForm}</aside>}
+          <aside className="search-panel">{searchForm}</aside>
           <section
             className="results-panel"
             aria-label="Search results"
@@ -361,7 +367,7 @@ export default function Home() {
                 ? `${own.length} matches in ${current.name}. Matches in ${alternatives.length} other programs.`
                 : 'Select a program and search to get started.'}
             </div>
-            {query === null ? null : (
+            {query === null || noResults ? null : (
               <>
                 <button
                   className="edit-search"
@@ -457,7 +463,7 @@ export default function Home() {
                             <button
                               onClick={() => {
                                 changeProgram(p.id);
-                                resultsRef.current?.scrollIntoView({
+                                !appRef.current?.classList.contains('search-view') && resultsRef.current?.scrollIntoView({
                                   behavior: 'smooth',
                                 });
                               }}
@@ -469,9 +475,6 @@ export default function Home() {
                       })}
                     </div>
                   </section>
-                )}
-                {noResults && (
-                  <div className="retry-search search-panel">{searchForm}</div>
                 )}
               </>
             )}
