@@ -48,7 +48,7 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
         <label className="eplan-search-field">Find in this program
           <span className="input-wrap"><Search size={21} /><input type="search" value={query} maxLength={150} onChange={e => onQueryChange(e.target.value)} placeholder="Narrative, school, account…" /></span>
         </label>
-        <nav className="eplan-links" aria-label="Budget navigation"><a href="#database">Individual item database</a><a href="https://eplan.tn.gov/Search/DistrictSearch.aspx" target="_blank" rel="noopener noreferrer">Open ePlan <ExternalLink size={14} /></a></nav>
+        <nav className="eplan-links" aria-label="Budget navigation"><a href="https://eplan.tn.gov/Search/DistrictSearch.aspx" target="_blank" rel="noopener noreferrer">Open ePlan <ExternalLink size={14} /></a></nav>
       </aside>
       <section className="eplan-results" aria-label="ePlan budget details">
       <p className="eplan-count" aria-live="polite">{rows.length} budget detail rows for {selectedProgram.name}{query.trim() ? ' matching your search' : ''}</p>
