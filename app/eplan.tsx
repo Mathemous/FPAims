@@ -46,7 +46,7 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
     </div></header>
     <main className="workspace eplan-workspace">
       <aside className="eplan-sidebar search-panel">
-        <div className="page-title"><span className="eplan-district-label">Knox County</span><h1>ePlan Budget<span>.</span></h1>
+        <div className="page-title"><h1>Knox County ePlan Budget<span>.</span></h1>
           <p>{source.district} ({source.districtCode}) · FY {source.year} · {source.application} ({source.applicationDate}) · Revision {source.revision}</p>
         </div>
         <div className="program-field">
