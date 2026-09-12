@@ -42,7 +42,7 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
 
   return <div className="app database-view eplan-view">
     <header className="app-header"><div className="header-inner">
-      <a href="#" className="brand compact" aria-label="FP AIMS home"><span>FP <strong>AIMS</strong></span></a>
+      <a href="#" className="brand compact" aria-label="Federal Programs Budget Search home"><span>Federal Programs <strong>Budget Search</strong></span></a>
     </div></header>
     <main className="workspace eplan-workspace">
       <aside className="eplan-sidebar search-panel">

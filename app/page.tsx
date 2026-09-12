@@ -30,7 +30,7 @@ function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <div className={compact ? 'brand compact' : 'brand'}>
       <span>
-        FP <strong>AIMS</strong>
+        {compact ? <>Federal Programs <strong>Budget Search</strong></> : <>Federal Programs<br /><strong>Budget Search</strong></>}
       </span>
       <i />
       <p>Approved Items, Materials &amp; Services</p>
@@ -313,7 +313,7 @@ export default function Home() {
                 setQuery(null);
               }}
             >
-              Enter FP AIMS <ArrowRight size={22} />
+              Enter Federal Programs Budget Search <ArrowRight size={22} />
             </a>
             <span className="welcome-steps">
               Select a program. Search. Discover.
@@ -333,7 +333,7 @@ export default function Home() {
           <a
             href="#"
             className="brand-link"
-            aria-label="FP AIMS home"
+            aria-label="Federal Programs Budget Search home"
             onClick={() => setEntered(false)}
           >
             <Brand compact />
