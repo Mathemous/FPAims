@@ -29,7 +29,7 @@ export default function Eplan() {
           {source.programs.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select></label>
         <label>Find in this program<input type="search" value={query} maxLength={150} onChange={e => setQuery(e.target.value)} placeholder="Narrative, school, account, or line item" /></label>
-        <nav className="eplan-links" aria-label="Budget navigation"><a href="#database">Individual item database</a><a href="https://eplan.tn.gov/Search/DistrictSearch.aspx" target="_blank" rel="noopener noreferrer">Open ePlan organization search <ExternalLink size={14} /></a></nav>
+        <nav className="eplan-links" aria-label="Budget navigation"><a href="#database">Individual item database</a><a href="https://eplan.tn.gov/Search/DistrictSearch.aspx" target="_blank" rel="noopener noreferrer">Open ePlan <ExternalLink size={14} /></a></nav>
       </div>
       <p className="eplan-count" aria-live="polite">{rows.length} budget detail rows for {selectedProgram.name}{query.trim() ? ' matching your search' : ''}</p>
       <div className="eplan-detail-list">
