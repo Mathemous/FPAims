@@ -14,9 +14,13 @@ type EplanProps = {
 export default function Eplan({ program, query, onProgramChange, onQueryChange }: EplanProps) {
   const [expandedNarratives, setExpandedNarratives] = useState<Set<string>>(new Set());
   const selectedProgram = source.programs.find(item => item.id === program)!;
-  const rows = useMemo(() => source.rows.filter(row => row.program === program &&
+  const matchingRows = useMemo(() => source.rows.filter(row =>
     [row.account, row.category, row.line, row.subcategory, row.narrative, row.organization, row.organizationCode, row.programCode, row.tags]
-      .join(' ').toLowerCase().includes(query.trim().toLowerCase())), [program, query]);
+      .join(' ').toLowerCase().includes(query.trim().toLowerCase())), [query]);
+  const rows = useMemo(() => matchingRows.filter(row => row.program === program), [matchingRows, program]);
+  const resultCounts = useMemo(() => Object.fromEntries(source.programs.map(item =>
+    [item.id, matchingRows.filter(row => row.program === item.id).length]
+  )), [matchingRows]);
   const highlight = (value: string | number) => {
     const text = String(value);
     const term = query.trim();
@@ -41,7 +45,7 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
           <span className="program-label">Programs</span>
           <div className="program-buttons" role="group" aria-label="ePlan programs">
             {source.programs.map((p, index) => <button key={p.id} type="button" className={`program-touch${index === 0 ? ' program-touch-centered' : ''}${program === p.id ? ' is-selected' : ''}`} aria-pressed={program === p.id} onClick={() => onProgramChange(p.id)}>
-              {p.name}<span className="program-entry-count">{source.rows.filter(row => row.program === p.id).length} entries</span>
+              {p.name}<span className="program-entry-count">{resultCounts[p.id]} {resultCounts[p.id] === 1 ? 'result' : 'results'}</span>
             </button>)}
           </div>
         </div>
