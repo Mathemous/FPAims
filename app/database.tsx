@@ -31,12 +31,17 @@ export default function Database() {
         </div>
       </header>
       <main className="workspace">
+        <div className="database-heading">
         <div className="page-title">
           <h1>Database<span>.</span></h1>
           <p>{records.length.toLocaleString()} stored entries across five programs. FY {source.year} · Revision {source.revision}.</p>
         </div>
+        <details className="database-info">
+          <summary>Source &amp; updates</summary>
         <p className="database-source">Source: Knox County Schools ePlan budget narratives. This is the published database; use Update from ePlan to check for changes. Original workbook entries retain their item names; updated sections include the complete source narrative. School and set-aside details remain part of the source.</p>
         <DatabaseUpdater />
+        </details>
+        </div>
         <div className="database-filters">
           <label>Program
             <select value={program} onChange={(e) => { setProgram(e.target.value); setPage(0); }}>

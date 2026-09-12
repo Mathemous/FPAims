@@ -1683,3 +1683,55 @@ body {
   .updater-body { padding: 15px; }
   .updater-actions .primary-button { width: 100%; }
 }
+
+/* Database browsing uses one vertical scroll area so the intro never traps rows. */
+.app.database-view {
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  display: block;
+}
+.app.database-view .app-header { position: static; }
+.database-view .header-inner { padding: 10px clamp(20px, 3vw, 48px); }
+.database-view .brand.compact > span { font-size: 25px; }
+.database-view .brand.compact p { display: none; }
+.app.database-view .workspace {
+  overflow: visible;
+  padding: 18px clamp(20px, 3vw, 48px) 24px;
+}
+.database-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px 24px;
+}
+.database-view .page-title h1 { font-size: 28px; letter-spacing: -.7px; }
+.database-view .page-title > p { font-size: 13px; margin-top: 4px; }
+.database-info > summary {
+  color: #2269aa;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 10px 0;
+}
+.database-info[open] { grid-column: 1 / -1; }
+.database-info .database-source { margin-top: 4px; }
+.database-info .database-updater { margin: 12px 0 0; }
+.database-view .database-filters {
+  display: grid;
+  grid-template-columns: minmax(180px, 280px) minmax(240px, 1fr);
+  gap: 16px;
+  margin: 16px 0 0;
+}
+.database-view .database-filters label { max-width: none; gap: 5px; font-size: 13px; }
+.database-view .database-filters input,
+.database-view .database-filters select { min-height: 42px; padding: 8px 12px; }
+.database-view .database-pagination { margin: 10px 0; }
+.database-view .database-table-wrap { max-height: none; }
+.database-view .database-table th { position: static; }
+@media (max-width: 650px) {
+  .database-heading { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .database-view .page-title h1 { font-size: 25px; }
+  .database-info > summary { padding: 8px 0; }
+  .database-view .database-filters { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 8px; }
+  .database-view .database-pagination { gap: 8px; font-size: 12px; }
+  .database-pagination > div { gap: 8px; }
+}
