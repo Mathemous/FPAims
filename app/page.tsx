@@ -27,7 +27,7 @@ function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <div className={compact ? 'brand compact' : 'brand'}>
       <span>
-        FP <strong>AIMS</strong>
+        Sherry&apos;s <strong>Great Idea</strong>
       </span>
       <i />
       <p>Approved Items, Materials &amp; Services</p>
@@ -313,7 +313,7 @@ export default function Home() {
                 setEntered(true);
               }}
             >
-              Enter FP AIMS <ArrowRight size={22} />
+              Enter Sherry&apos;s Great Idea <ArrowRight size={22} />
             </a>
             <span className="welcome-steps">
               Select a program. Search. Discover.
@@ -333,7 +333,7 @@ export default function Home() {
           <a
             href="#"
             className="brand-link"
-            aria-label="FP AIMS home"
+            aria-label="Sherry's Great Idea home"
             onClick={() => setEntered(false)}
           >
             <Brand compact />

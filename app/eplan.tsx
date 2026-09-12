@@ -43,7 +43,7 @@ export default function Eplan({ program, query, onProgramChange, onQueryChange }
 
   return <div className="app database-view eplan-view">
     <header className="app-header"><div className="header-inner">
-      <a href="#" className="brand compact" aria-label="FP AIMS home"><span>FP <strong>AIMS</strong></span></a>
+      <a href="#" className="brand compact" aria-label="Sherry's Great Idea home"><span>Sherry&apos;s <strong>Great Idea</strong></span></a>
       <a href="#search" className="database-back"><ArrowLeft size={17} /> Item search</a>
     </div></header>
     <main className="workspace eplan-workspace">

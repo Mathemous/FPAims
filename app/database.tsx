@@ -23,8 +23,8 @@ export default function Database() {
     <div className="app database-view">
       <header className="app-header">
         <div className="header-inner">
-          <a href="#" className="brand compact" aria-label="FP AIMS home">
-            <span>FP <strong>AIMS</strong></span>
+          <a href="#" className="brand compact" aria-label="Sherry's Great Idea home">
+            <span>Sherry&apos;s <strong>Great Idea</strong></span>
             <p>Approved Items, Materials &amp; Services</p>
           </a>
           <a href="#search" className="database-back"><ArrowLeft size={17} /> Search</a>
@@ -64,7 +64,7 @@ export default function Database() {
         </div>
         <div className="database-table-wrap" role="region" aria-label="Database records, scroll horizontally for all fields" tabIndex={0}>
           <table className="database-table">
-            <caption className="sr-only">Stored FP AIMS database records</caption>
+            <caption className="sr-only">Stored Sherry&apos;s Great Idea database records</caption>
             <thead><tr>{['Program', 'Item or service', 'Narrative subcategory', 'Account', 'Line item', 'Budget category', 'Record ID'].map((heading) => <th key={heading} scope="col">{heading}</th>)}</tr></thead>
             <tbody>{displayed.map((record: (typeof records)[number]) => <tr key={record.id}>
               <td>{programNames[record.program]}</td><td>{record.item}{record.narrative && <details><summary>Full ePlan narrative</summary><p className="source-narrative">{record.narrative}</p></details>}</td><td>{record.subcategory}</td><td>{record.account}</td><td>{record.line}</td><td>{record.category}</td><td>{record.id}</td>
