@@ -1924,7 +1924,7 @@ body {
 
 .match-preview-row { display: flex; align-items: flex-start; gap: 8px; margin: 12px 0 18px; }
 .match-preview-count { flex-shrink: 0; font-size: 13px; font-weight: 600; padding-top: 9px; color: #315b7d; }
-.match-preview-box { flex: 1; min-width: 0; padding: 8px 10px; border: 1px solid #b6d5ee; border-radius: 8px; background: #ffffffb3; }
-.alternative-card .match-preview-box ul { list-style: none; margin: 0; padding: 0; font-size: 13px; line-height: 1.5; }
+.match-preview-box { flex: 1; min-width: 0; padding: 8px 10px; border: 1px solid #b6d5ee; border-radius: 8px; background: #edf6ff; }
+.alternative-card .match-preview-box ul { list-style: disc outside; margin: 0; padding: 0 0 0 16px; font-size: 13px; line-height: 1.5; }
 .match-preview-box li { overflow-wrap: anywhere; }
 .match-preview-more { display: block; margin-top: 6px; color: #245c87; font-size: 12px; font-weight: 650; }
