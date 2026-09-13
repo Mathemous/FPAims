@@ -27,7 +27,7 @@ import eplanSource from '@/data/eplan-source.json';
 import Database from './database';
 import Eplan from './eplan';
 type Item = (typeof records)[number];
-const usesPhoneLayout = () => window.matchMedia('(max-width: 650px)').matches;
+const usesPhoneLayout = () => window.matchMedia('(max-width: 900px)').matches;
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <div className={compact ? 'brand compact' : 'brand'}>
@@ -131,7 +131,7 @@ export default function Home() {
   const resultsRef = useRef<HTMLDivElement>(null),
     inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    const phoneLayout = window.matchMedia('(max-width: 650px)');
+    const phoneLayout = window.matchMedia('(max-width: 900px)');
     const sync = () => {
       const searchRoute = location.hash === '#search' || location.hash === '#eplan';
       setEntered(phoneLayout.matches && searchRoute);
