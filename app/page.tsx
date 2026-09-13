@@ -480,9 +480,6 @@ export default function Home() {
                         const grouped = groupMatches(p.rows);
                         return (
                           <article key={p.id} className={`alternative-card ${p.id !== program ? 'other-program-card' : ''}`}>
-                            <span className="available">
-                              <Check size={13} /> Listed in this program
-                            </span>
                             <h3>{p.name}</h3>
                             <div className="match-preview-row">
                               <span className="match-preview-count">{grouped.length} {grouped.length === 1 ? 'match' : 'matches'}:</span>
