@@ -1914,7 +1914,14 @@ body {
 .line-item-short { flex-shrink: 0; white-space: nowrap; text-align: right; color: #61758b; font-size: 13px; line-height: 1.5; }
 /* All programs outside the chosen search program share one distinct tint. */
 .match-card.other-program-card,
-.alternative-card.other-program-card { background: #f1edf9; border-color: #c9bbdf; }
+.alternative-card.other-program-card { background: #edf6ff; border-color: #b6d5ee; }
 .other-program-card .match-program,
-.other-program-card .available { background: #e3d9f2; color: #583a7c; }
-.other-program-card .item-icon { background: #e3d9f2; color: #583a7c; }
+.other-program-card .available { background: #d8ebfc; color: #245c87; }
+.other-program-card .item-icon { background: #d8ebfc; color: #245c87; }
+
+.match-preview-row { display: flex; align-items: flex-start; gap: 8px; margin: 12px 0 18px; }
+.match-preview-count { flex-shrink: 0; font-size: 13px; font-weight: 600; padding-top: 9px; color: #315b7d; }
+.match-preview-box { flex: 1; min-width: 0; padding: 8px 10px; border: 1px solid #b6d5ee; border-radius: 8px; background: #ffffffb3; }
+.alternative-card .match-preview-box ul { list-style: none; margin: 0; padding: 0; font-size: 13px; line-height: 1.5; }
+.match-preview-box li { overflow-wrap: anywhere; }
+.match-preview-more { display: block; margin-top: 6px; color: #245c87; font-size: 12px; font-weight: 650; }

@@ -487,17 +487,13 @@ export default function Home() {
                               <Check size={13} /> Listed in this program
                             </span>
                             <h3>{p.name}</h3>
-                            <p>
-                              {grouped.length}{' '}
-                              {grouped.length === 1 ? 'match' : 'matches'}
-                            </p>
-                            <ul>
-                              {grouped
-                                .slice(0, 2)
-                                .map((g: { key: string; item: Item }) => (
-                                  <li key={g.key}>{g.item.item}</li>
-                                ))}
-                            </ul>
+                            <div className="match-preview-row">
+                              <span className="match-preview-count">{grouped.length} {grouped.length === 1 ? 'match' : 'matches'}:</span>
+                              <div className="match-preview-box">
+                                <ul>{grouped.slice(0, 2).map((g: {key: string; item: Item}) => <li key={g.key}>{g.item.item}</li>)}</ul>
+                                {grouped.length > 2 && <span className="match-preview-more">+{grouped.length - 2} more</span>}
+                              </div>
+                            </div>
                             <button
                               onClick={() => {
                                 setProgram(p.id);
