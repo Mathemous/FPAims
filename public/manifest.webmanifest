@@ -1,1 +1,22 @@
-{"name":"Federal Programs ePlan Search","short_name":"FP ePlan Search","start_url":"/","display":"standalone","background_color":"#10375f","theme_color":"#10375f","icons":[{"src":"/favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}
+{
+  "name": "Federal Programs ePlan Search",
+  "short_name": "FPES",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#10375f",
+  "theme_color": "#10375f",
+  "icons": [
+    {
+      "src": "/icon-fpes-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-fpes-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
