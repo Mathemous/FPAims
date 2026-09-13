@@ -1908,3 +1908,7 @@ body {
 .source-location-list p + p { margin-top: 8px; }
 .budget-source-section + .budget-source-section { margin-top: 18px; padding-top: 14px; border-top: 1px solid #dce5ee; }
 .budget-amount-note { font-size: 12px; color: #61758b; margin-bottom: 18px; }
+
+.account-line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 6px; }
+.account-line .account { flex: 1; min-width: 0; margin: 0; }
+.line-item-short { flex-shrink: 0; white-space: nowrap; text-align: right; color: #61758b; font-size: 13px; line-height: 1.5; }

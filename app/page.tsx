@@ -86,7 +86,7 @@ function MatchCard({ item, count }: { item: Item; count: number; query: string }
         </div>
         <h3>{item.item}</h3>
         {schools.length > 0 && <p className="match-schools">{schools.slice(0, 2).join(' · ')}{schools.length > 2 ? ' + ' + (schools.length - 2) + ' more' : ''}</p>}
-        <p className="account">{item.account} · {item.category}</p>
+        <div className="account-line"><p className="account">{item.account} · {item.category}</p><span className="line-item-short">LI: {item.line}</span></div>
         <div className="match-actions">
           <button type="button" className="source-details-toggle" aria-expanded={detailsOpen} aria-controls={detailsId} onClick={() => setDetailsOpen(!detailsOpen)}>Source details <ChevronDown size={16} /></button>
           {sources.length > 0 && <button type="button" className="read-narrative" onClick={() => dialogRef.current?.showModal()}>Read full narrative</button>}
