@@ -23,7 +23,7 @@ import mobileDetails from '@/data/mobile-details.json';
 import { locationBlurb } from '@/lib/source-context.mjs';
 import source from '@/data/eplan-meta.json';
 import eplanSource from '@/data/eplan-source.json';
-import { matchesEplanQuery } from '@/lib/eplan-search';
+
 import Database from './database';
 import Eplan from './eplan';
 type Item = (typeof records)[number];
@@ -198,7 +198,7 @@ export default function Home() {
     [query],
   );
   const programEntryCounts = useMemo(() => {
-    const entries = eplanSource.rows.filter(row => matchesEplanQuery(row, word));
+    const entries = word.trim() ? groupMatches(searchRecords(records, word)).map((group: { item: Item }) => group.item) : eplanSource.rows;
     return Object.fromEntries(
       programs.map((p) => [p.id, entries.filter(row => row.program === p.id).length]),
     );
