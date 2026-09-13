@@ -17,7 +17,7 @@ import {
   X,
 } from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { programs, searchRecords, groupMatches } from '@/lib/search.mjs';
+import { programs, searchRecords, groupMatches, narrativeHighlights } from '@/lib/search.mjs';
 import records from '@/lib/records';
 import mobileDetails from '@/data/mobile-details.json';
 import { locationBlurb } from '@/lib/source-context.mjs';
@@ -62,7 +62,7 @@ function BudgetSourceFields({ row }: { row: (typeof eplanSource.rows)[number] })
   ];
   return <><dl className="budget-source-fields">{fields.map(([label,value]) => <div key={label}><dt>{label}:</dt><dd>{value}</dd></div>)}</dl><p className="budget-amount-note">Amounts apply to the full source budget line.</p></>;
 }
-function MatchCard({ item, count, otherProgram = false }: { item: Item; count: number; query: string; otherProgram?: boolean }) {
+function MatchCard({ item, count, query, otherProgram = false }: { item: Item; count: number; query: string; otherProgram?: boolean }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = React.useId();
   const detailsId = React.useId();
@@ -107,7 +107,7 @@ function MatchCard({ item, count, otherProgram = false }: { item: Item; count: n
             <div className="narrative-dialog-body">
               {sources.map(({row}) => <section key={row.sourceId}>
                 <BudgetSourceFields row={row} />
-                <p className="source-narrative">{row.narrative}</p>
+                <p className="source-narrative">{narrativeHighlights(row.narrative, query).map((part: {text: string; match: boolean}, index: number) => part.match ? <mark className="narrative-match" key={index}>{part.text}</mark> : part.text)}</p>
               </section>)}
             </div>
           </dialog>

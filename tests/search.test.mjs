@@ -68,3 +68,15 @@ test('search never replaces the entered spelling', () => {
   assert.deepEqual(searchRecords(fixture, 'keebored'), []);
   assert.deepEqual(searchRecords(records, 'keebored'), []);
 });
+
+
+import { narrativeHighlights } from '../lib/search.mjs';
+test('full narrative highlights singular and plural matches without changing the source', () => {
+  const text = '3D Printer Supplies (filament, SD cards). Printers & paper.';
+  const parts = narrativeHighlights(text, 'printers');
+  assert.deepEqual(parts.filter(p => p.match).map(p => p.text), ['Printer', 'Printers']);
+  assert.equal(parts.map(p => p.text).join(''), text);
+  assert.ok(narrativeHighlights(text, '').every(p => !p.match));
+  assert.ok(narrativeHighlights(text, 'keebored').every(p => !p.match));
+  assert.deepEqual(narrativeHighlights('Supplies: PAPER, paper.', 'paper').filter(p => p.match).map(p => p.text), ['PAPER', 'paper']);
+});

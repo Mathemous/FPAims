@@ -1928,3 +1928,5 @@ body {
 .alternative-card .match-preview-box ul { list-style: disc outside; margin: 0; padding: 0 0 0 16px; font-size: 13px; line-height: 1.5; }
 .match-preview-box li { overflow-wrap: anywhere; }
 .match-preview-more { display: block; margin-top: 6px; color: #245c87; font-size: 12px; font-weight: 650; }
+
+.narrative-match { background: #ffe58a; color: #17324e; border-radius: 2px; padding: 0 1px; }
