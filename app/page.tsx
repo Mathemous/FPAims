@@ -62,7 +62,7 @@ function BudgetSourceFields({ row }: { row: (typeof eplanSource.rows)[number] })
   ];
   return <><dl className="budget-source-fields">{fields.map(([label,value]) => <div key={label}><dt>{label}:</dt><dd>{value}</dd></div>)}</dl><p className="budget-amount-note">Amounts apply to the full source budget line.</p></>;
 }
-function MatchCard({ item, count }: { item: Item; count: number; query: string }) {
+function MatchCard({ item, count, otherProgram = false }: { item: Item; count: number; query: string; otherProgram?: boolean }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = React.useId();
   const detailsId = React.useId();
@@ -77,7 +77,7 @@ function MatchCard({ item, count }: { item: Item; count: number; query: string }
   const schools = [...new Set(associations.map(a => a.school))];
   const categories = [...new Set(associations.flatMap(a => a.category ? [a.category] : []))];
   return (
-    <article className="match-card">
+    <article className={`match-card ${otherProgram ? 'other-program-card' : ''}`}>
       <div className="item-icon"><BookOpen size={21} /></div>
       <div className="match-content">
         <div className="match-card-top">
@@ -121,6 +121,7 @@ export default function Home() {
   const [databaseOpen, setDatabaseOpen] = useState(() => location.hash === '#database');
   const [eplanOpen, setEplanOpen] = useState(() => !usesPhoneLayout() && (location.hash === '#eplan' || location.hash === '#search'));
   const [program, setProgram] = useState('title-1-a');
+  const [preferredProgram, setPreferredProgram] = useState('title-1-a');
   const [word, setWord] = useState('');
   const [query, setQuery] = useState<string | null>(null);
   const [visible, setVisible] = useState(30);
@@ -215,6 +216,7 @@ export default function Home() {
   function submit(e: React.FormEvent) {
     e.preventDefault();
     inputRef.current?.blur();
+    setPreferredProgram(program);
     setQuery(word.trim());
     setVisible(30);
     setTimeout(
@@ -227,6 +229,7 @@ export default function Home() {
     );
   }
   function changeProgram(value: string) {
+    setPreferredProgram(value);
     setProgram(value);
     setVisible(30);
   }
@@ -454,6 +457,7 @@ export default function Home() {
                           key={g.key}
                           item={g.item}
                           count={g.count}
+                          otherProgram={g.item.program !== preferredProgram}
                           query={query}
                         />
                       ),
@@ -478,7 +482,7 @@ export default function Home() {
                       {alternatives.map((p) => {
                         const grouped = groupMatches(p.rows);
                         return (
-                          <article key={p.id} className="alternative-card">
+                          <article key={p.id} className={`alternative-card ${p.id !== preferredProgram ? 'other-program-card' : ''}`}>
                             <span className="available">
                               <Check size={13} /> Listed in this program
                             </span>
@@ -496,7 +500,8 @@ export default function Home() {
                             </ul>
                             <button
                               onClick={() => {
-                                changeProgram(p.id);
+                                setProgram(p.id);
+                                setVisible(30);
                                 !appRef.current?.classList.contains('search-view') && resultsRef.current?.scrollIntoView({
                                   behavior: 'smooth',
                                 });

@@ -1912,3 +1912,9 @@ body {
 .account-line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 6px; }
 .account-line .account { flex: 1; min-width: 0; margin: 0; }
 .line-item-short { flex-shrink: 0; white-space: nowrap; text-align: right; color: #61758b; font-size: 13px; line-height: 1.5; }
+/* All programs outside the chosen search program share one distinct tint. */
+.match-card.other-program-card,
+.alternative-card.other-program-card { background: #f1edf9; border-color: #c9bbdf; }
+.other-program-card .match-program,
+.other-program-card .available { background: #e3d9f2; color: #583a7c; }
+.other-program-card .item-icon { background: #e3d9f2; color: #583a7c; }
