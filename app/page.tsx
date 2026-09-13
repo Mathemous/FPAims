@@ -267,7 +267,7 @@ export default function Home() {
               )}
               <span id={`entries-${p.id}`} className="program-entry-count">
                 {programEntryCounts[p.id]}{' '}
-                {programEntryCounts[p.id] === 1 ? 'result' : 'results'}
+                {word.trim() ? (programEntryCounts[p.id] === 1 ? 'result' : 'results') : (programEntryCounts[p.id] === 1 ? 'section' : 'sections')}
               </span>
             </ToggleGroupItem>
           ))}
