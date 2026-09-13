@@ -121,7 +121,6 @@ export default function Home() {
   const [databaseOpen, setDatabaseOpen] = useState(() => location.hash === '#database');
   const [eplanOpen, setEplanOpen] = useState(() => !usesPhoneLayout() && (location.hash === '#eplan' || location.hash === '#search'));
   const [program, setProgram] = useState('title-1-a');
-  const [preferredProgram, setPreferredProgram] = useState('title-1-a');
   const [word, setWord] = useState('');
   const [query, setQuery] = useState<string | null>(null);
   const [visible, setVisible] = useState(30);
@@ -216,7 +215,6 @@ export default function Home() {
   function submit(e: React.FormEvent) {
     e.preventDefault();
     inputRef.current?.blur();
-    setPreferredProgram(program);
     setQuery(word.trim());
     setVisible(30);
     setTimeout(
@@ -229,7 +227,6 @@ export default function Home() {
     );
   }
   function changeProgram(value: string) {
-    setPreferredProgram(value);
     setProgram(value);
     setVisible(30);
   }
@@ -457,7 +454,7 @@ export default function Home() {
                           key={g.key}
                           item={g.item}
                           count={g.count}
-                          otherProgram={g.item.program !== preferredProgram}
+                          otherProgram={g.item.program !== program}
                           query={query}
                         />
                       ),
@@ -482,7 +479,7 @@ export default function Home() {
                       {alternatives.map((p) => {
                         const grouped = groupMatches(p.rows);
                         return (
-                          <article key={p.id} className={`alternative-card ${p.id !== preferredProgram ? 'other-program-card' : ''}`}>
+                          <article key={p.id} className={`alternative-card ${p.id !== program ? 'other-program-card' : ''}`}>
                             <span className="available">
                               <Check size={13} /> Listed in this program
                             </span>
