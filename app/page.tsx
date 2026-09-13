@@ -20,6 +20,7 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { programs, searchRecords, groupMatches } from '@/lib/search.mjs';
 import records from '@/lib/records';
 import mobileDetails from '@/data/mobile-details.json';
+import { locationBlurb } from '@/lib/source-context.mjs';
 import source from '@/data/eplan-meta.json';
 import eplanSource from '@/data/eplan-source.json';
 import { matchesEplanQuery } from '@/lib/eplan-search';
@@ -45,6 +46,22 @@ const shortPrograms: Record<string, string> = {
 type MobileSource = { sourceId: string; associations: { school: string; category?: string; excerpt: string }[] };
 const detailsById = mobileDetails as Record<string, MobileSource[]>;
 const narrativesById = new Map(eplanSource.rows.map(row => [row.sourceId, row]));
+const budgetDollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+function BudgetSourceFields({ row }: { row: (typeof eplanSource.rows)[number] }) {
+  const amount = row.total && Number.isFinite(Number(row.total)) ? budgetDollars.format(Number(row.total)) : '—';
+  const fields = [
+    ['Account Number', row.account + ' - ' + row.category],
+    ['Line Item Number', row.line + ' - ' + row.subcategory],
+    ['Budget Tags', row.tags || '—'],
+    ['Optional Program Code', row.programCode || '—'],
+    ['Location Code', row.organization + ' (' + row.organizationCode + ')'],
+    ['Cost', amount],
+    ['Line Item Total', amount],
+    ['Source Row', row.sourceId],
+    ['Last Updated', row.updatedAt || '—'],
+  ];
+  return <><dl className="budget-source-fields">{fields.map(([label,value]) => <div key={label}><dt>{label}:</dt><dd>{value}</dd></div>)}</dl><p className="budget-amount-note">Amounts apply to the full source budget line.</p></>;
+}
 function MatchCard({ item, count }: { item: Item; count: number; query: string }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = React.useId();
@@ -75,11 +92,10 @@ function MatchCard({ item, count }: { item: Item; count: number; query: string }
           {sources.length > 0 && <button type="button" className="read-narrative" onClick={() => dialogRef.current?.showModal()}>Read full narrative</button>}
         </div>
           <div id={detailsId} className="details-content" hidden={!detailsOpen}>
-            <p><strong>Line item:</strong> {item.line}</p>
-            {associations.map((a, i) => <div className="school-source" key={i}>
-              <p><strong>{a.school}</strong>{a.category ? ' · ' + a.category : ''}</p>
-              <p>{a.excerpt}</p>
-            </div>)}
+            {sources.length ? sources.map(({row, associations: locations}) => <section className="budget-source-section" key={row.sourceId}>
+              {locations.length > 0 && <div className="source-location-list">{locations.map((a, i) => <p key={i}><strong>{a.school}:</strong> {locationBlurb(a.excerpt)}</p>)}</div>}
+              <BudgetSourceFields row={row} />
+            </section>) : <p><strong>Line item:</strong> {item.line}</p>}
             <p>{count} database {count === 1 ? 'entry' : 'entries'} · FY {source.year} · Revision {source.revision}</p>
           </div>
         {sources.length > 0 && <>
@@ -90,7 +106,7 @@ function MatchCard({ item, count }: { item: Item; count: number; query: string }
             </div>
             <div className="narrative-dialog-body">
               {sources.map(({row}) => <section key={row.sourceId}>
-                <p className="narrative-source-label">Account {row.account} · Line {row.line} · Source {row.sourceId}</p>
+                <BudgetSourceFields row={row} />
                 <p className="source-narrative">{row.narrative}</p>
               </section>)}
             </div>

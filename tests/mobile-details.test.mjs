@@ -33,3 +33,13 @@ test('no school is carried across revision boundaries or inferred for unmatched 
   assert.deepEqual(sourceContext(item,rows)[0].associations,[]);
   assert.deepEqual(sourceContext({...item,item:'Markers'},rows),[]);
 });
+
+import { locationBlurb } from '../lib/source-context.mjs';
+test('family engagement blurbs retain the correct named school and purpose', () => {
+  const row = source.rows.find(r => r.sourceId === '11146445');
+  const links = sourceContext({program:row.program,account:row.account,line:row.line,item:'Markers'}, [row]);
+  const sacred = links[0].associations.find(a=>a.school==='Sacred Heart');
+  const joseph = links[0].associations.find(a=>a.school==='St. Joseph');
+  assert.equal(locationBlurb(sacred.excerpt), 'Supplies for family engagement events');
+  assert.equal(locationBlurb(joseph.excerpt), "Supplies for Fall and Spring family engagement events for Tutoring Students' Families");
+});

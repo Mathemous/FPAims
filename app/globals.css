@@ -1899,3 +1899,12 @@ body {
 .source-details-toggle { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; padding: 8px 0; color: #1767a8; background: none; font-size: 13px; text-align: left; }
 .source-details-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
 .match-actions .read-narrative { margin-left: auto; justify-content: flex-end; text-align: right; font-size: 13px; }
+
+.budget-source-fields { display: grid; gap: 8px; margin: 12px 0; font-size: 13px; line-height: 1.5; }
+.budget-source-fields > div { display: grid; grid-template-columns: minmax(95px, 0.8fr) minmax(0, 1.4fr); gap: 8px; }
+.budget-source-fields dt { font-weight: 700; color: #466887; }
+.budget-source-fields dd { margin: 0; overflow-wrap: anywhere; color: #17324e; }
+.source-location-list { margin-bottom: 16px; line-height: 1.55; }
+.source-location-list p + p { margin-top: 8px; }
+.budget-source-section + .budget-source-section { margin-top: 18px; padding-top: 14px; border-top: 1px solid #dce5ee; }
+.budget-amount-note { font-size: 12px; color: #61758b; margin-bottom: 18px; }
