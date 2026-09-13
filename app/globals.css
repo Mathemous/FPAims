@@ -548,6 +548,7 @@ h3 {
   min-width: 0;
 }
 .match-content h3 {
+  text-wrap: wrap;
   font-size: 18px;
   line-height: 1.5;
   font-weight: 650;
@@ -858,6 +859,7 @@ h3 {
     grid-template-columns: 1fr;
   }
   .match-content h3 {
+  text-wrap: wrap;
     font-size: 17px;
   }
   .app-footer {
@@ -1484,6 +1486,7 @@ body {
     border-radius: 12px;
   }
   .match-content h3 {
+  text-wrap: wrap;
     font-size: 18px;
   }
   .account,
